@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@600;700;900");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@1,900&display=swap");
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+body {
+  @apply bg-body text-text;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Desativar olho da senha */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+/* Cor de fundo ao selecionar texto */
+::selection {
+  background: #72551E;
+  /* #F9A82670 */
+}
