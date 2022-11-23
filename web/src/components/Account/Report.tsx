@@ -26,7 +26,7 @@ export default function Report(props: ReportProps) {
     setFile(acceptedFiles[0]);
   }, [acceptedFiles]);
 
-  if (!props.user || !props.user.report) {
+  if (!props.user) {
     return null;
   }
 
@@ -70,15 +70,14 @@ export default function Report(props: ReportProps) {
 
       <h2
         className="flex items-center gap-2 text-title text-3xl">
-        Seu relatório médico
+        {props.user.report ? "Seu" : "Adicionar"} laudo médico
 
         <em  {...getRootProps()}>
           <UploadSimple color="#EBA417" className="cursor-pointer" />
         </em>
       </h2>
 
-      <div className="flex items-center gap-4 mt-4">
-
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
 
         <img
           className="max-h-[43.75rem] shadow-elevation rounded"
@@ -87,7 +86,7 @@ export default function Report(props: ReportProps) {
         />
 
         <Button
-          className={`${file ? "opacity-100 visible" : "opacity-0 invisible"} h-14 w-28 transition-all duration-500 mt-0`}
+          className={`${file ? "opacity-100 visible max-h-fit" : "opacity-0 invisible max-h-0"} h-14 sm:w-28 transition-all duration-500 mt-0`}
           onClick={uploadReport}
           title="Enviar" />
 

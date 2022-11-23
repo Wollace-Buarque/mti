@@ -69,7 +69,7 @@ export default function Signin() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header login />
+      <Header signin />
 
       <main className="max-w-5xl mx-auto w-full flex flex-col gap-8 sm:gap-0 sm:flex-row items-center justify-between flex-1 py-6 sm:py-0">
 

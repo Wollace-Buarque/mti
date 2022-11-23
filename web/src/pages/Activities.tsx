@@ -1,12 +1,13 @@
 import { Trash } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import * as HoverCard from "@radix-ui/react-hover-card";
 
 import userSVG from "../assets/user.svg";
 import MedicCard from "../components/Account/MedicCard";
 import Header from "../components/Header/Header";
+import ImageModal from "../components/ImageModal";
 import Searcher from "../components/Searcher";
 import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
 import { Patient } from "../context/PatientContext";
@@ -187,11 +188,10 @@ export default function Activities() {
               Relatório médico
             </h2>
 
-            <img
-              className="max-h-[43.75rem] shadow-elevation rounded mt-4"
+            <ImageModal
               src={patient.report.reportUrl}
-              draggable={false}
-            />
+              className="max-h-[43.75rem] shadow-elevation rounded mt-4"
+              draggable={false} />
 
           </div>
         )}
