@@ -1,4 +1,4 @@
-# mti
+# MTI
 Mapeamento da terceira idade
 
 ## Instalação das dependências
