@@ -6,6 +6,7 @@ import { AuthenticateContext, User } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
 import showToast from "../../utilities/toast";
 import Button from "../Button";
+import ImageModal from "../ImageModal";
 
 interface ReportProps {
   user: User;
@@ -17,7 +18,7 @@ export default function Report(props: ReportProps) {
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
-      "image/*": [".png", ".gif", ".jpeg", ".jpg"]
+      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"]
     },
     maxFiles: 1,
   });
@@ -80,7 +81,7 @@ export default function Report(props: ReportProps) {
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
 
         <img
-          className="max-h-[43.75rem] shadow-elevation rounded"
+          className="max-w-4xl max-h-[43.75rem] shadow-elevation rounded"
           src={file ? URL.createObjectURL(file) : props.user.report?.reportUrl}
           draggable={false}
         />

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FormEvent, useContext } from "react";
 
 import * as Dialog from "@radix-ui/react-dialog";
@@ -6,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
+import { server } from "../../services/server";
 import { clockFormatter } from "../../utilities/clockFormatter";
 import showToast from "../../utilities/toast";
 import Button from "../Button";
@@ -62,14 +62,14 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
       return;
     }
 
-    if (!user.medic) {
+    if (user.type !== "medic") {
       showToast("Apenas médicos podem adicionar atividades a pacientes!", 500);
       props.setOpen(false);
       return;
     }
 
     try {
-      const { data } = await axios.post("http://localhost:3000/activity", {
+      const { data } = await server.post("/activity", {
         name: activity,
         duration,
         description,
@@ -162,9 +162,8 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
             <div className="flex gap-2">
               <Button title="Adicionar" />
 
-              <Dialog.Close
-                className="text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold hover:brightness-90 transition-[filter] duration-300">
-                Cancelar
+              <Dialog.Close asChild>
+                <Button title="Cancelar" />
               </Dialog.Close>
             </div>
           </form>

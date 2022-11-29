@@ -16,7 +16,7 @@ export default function Profile() {
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
-      "image/*": [".png", ".gif", ".jpeg", ".jpg"]
+      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"]
     },
     maxFiles: 1,
   });

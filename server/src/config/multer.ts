@@ -20,7 +20,7 @@ export default {
           callback(null, reports);
           break;
         default:
-          console.log("Invalid type.");
+          console.log("Invalid request type.");
           break;
       }
     },
@@ -39,10 +39,10 @@ export default {
   }),
   fileFilter: (request: any, file: any, callback: any) => {
     const allowedMimes = [
+      // "image/gif",
       "image/jpeg",
       "image/pjpeg",
-      "image/png",
-      "image/gif"];
+      "image/png"];
 
     if (allowedMimes.includes(file.mimetype)) {
       callback(null, true);

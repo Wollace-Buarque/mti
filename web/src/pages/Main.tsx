@@ -9,7 +9,7 @@ import { AuthenticateContext, User } from "../context/AuthenticateContext";
 import { server } from "../services/server";
 import Loading from "./Loading";
 
-export type Medic = Pick<User, "name" | "avatarUrl" | "medic">;
+export type Medic = Pick<User, "name" | "avatarUrl" | "type">;
 
 export default function Main() {
   const { loading, user } = useContext(AuthenticateContext);
@@ -20,7 +20,7 @@ export default function Main() {
   useEffect(() => {
 
     server.get("/users").then(response => {
-      setMedics(response.data.filter((user: Medic) => user.avatarUrl !== null && user.medic).sort());
+      setMedics(response.data.filter((user: Medic) => user.avatarUrl !== null && user.type === "medic").sort());
     });
 
   }, []);

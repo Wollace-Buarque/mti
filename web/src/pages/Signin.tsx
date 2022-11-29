@@ -54,7 +54,7 @@ export default function Signin() {
       name: response.name,
       email: response.email,
       token: response.token,
-      medic: response.medic,
+      type: response.type,
       report: response.report,
       avatarUrl: response.avatarUrl,
       createdAt: new Date(response.createdAt),

@@ -32,7 +32,7 @@ async function createActivity(request: express.Request, response: express.Respon
     return;
   }
 
-  if (!author.medic) {
+  if (author.type !== "medic") {
     response.status(401).send("Author is not a medic");
     return;
   }

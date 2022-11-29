@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 
 import Activity from "../components/Account/Activity";
 import CreateActivityModal from "../components/Account/CreateActivityModal";
+import DefineMedicModal from "../components/Account/DefineMedicModal";
 import Patient from "../components/Account/Patient";
 import Profile from "../components/Account/Profile";
 import Report from "../components/Account/Report";
@@ -23,6 +24,7 @@ export default function Account() {
 
   const [showPatients, setShowPatients] = useState(false);
   const [showActivities, setShowActivities] = useState(false);
+
   const [patients, setPatients] = useState<IPatient[]>([]);
 
   const [filteredPatients, setFilteredPatients] = useState<IPatient[]>([]);
@@ -31,15 +33,27 @@ export default function Account() {
   document.title = "Conta - MTI";
 
   useEffect(() => {
-    if (!user || !user.medic) return;
+    if (!user || (user.type !== "medic" && user.type !== "admin")) return;
 
     server.get("/users").then(response => {
 
-      setPatients(response.data.filter((patient: User) => !patient.medic)
-        .sort((a: IPatient, b: IPatient) => a.activities?.length - b.activities?.length));
+      switch (user.type) {
+        case "medic":
+          setPatients(response.data.filter((patient: User) => patient.type === "patient")
+            .sort((a: IPatient, b: IPatient) => a.activities?.length - b.activities?.length));
+          break;
+        case "admin":
+          setPatients(response.data.filter((patient: User) => patient.type === "patient" || patient.type === "medic")
+            .sort((a: IPatient, b: IPatient) => a.activities?.length - b.activities?.length));
+          break;
+      }
 
     });
   }, []);
+
+  useEffect(() => {
+    setFilteredPatients(patients);
+  }, [patients]);
 
   if (loading || !user) {
     return <Loading account />
@@ -67,7 +81,7 @@ export default function Account() {
 
         <Profile />
 
-        {user.medic && patients.length > 0 && (
+        {user.type === "medic" && patients.length > 0 && (
           <div className="mt-8">
             <h2
               onClick={() => setShowPatients(!showPatients)}
@@ -105,7 +119,7 @@ export default function Account() {
           </div>
         )}
 
-        {!user.medic && user.activities?.length > 0 && (
+        {user.type === "patient" && user.activities?.length > 0 && (
           <div className="mt-8">
 
             <h2
@@ -116,7 +130,7 @@ export default function Account() {
 
               {showActivities
                 ? <CaretUp size={20} color="#EBA417" weight="bold" />
-                : <CaretDown size={20} color="#EBA417" weight="bold" />}
+                : <CaretDown size={20} color="#EBA417" weight="bold" className="animate-bounce" />}
             </h2>
 
             <Searcher
@@ -136,8 +150,45 @@ export default function Account() {
           </div>
         )}
 
-        {!user.medic && (
+        {user.type === "patient" && (
           <Report user={user} />
+        )}
+
+        {user.type === "admin" && (
+          <div className="mt-8">
+
+            <h2
+              onClick={() => setShowPatients(!showPatients)}
+              className="flex items-center gap-2 text-title text-3xl cursor-pointer">
+
+              Pacientes e médicos para gerênciar
+
+              {showPatients
+                ? <CaretUp size={20} color="#EBA417" weight="bold" />
+                : <CaretDown size={20} color="#EBA417" weight="bold" className="animate-bounce" />}
+            </h2>
+
+            <Searcher
+              onChangeHandler={patientSearcher}
+              className={`my-2 ${showPatients ? "opacity-100 visible max-h-10" : "opacity-0 invisible max-h-0"} transition-all duration-500`} />
+
+            <div className={`overflow-y-hidden ${showPatients ? "hover:overflow-y-auto max-h-[585px]" : "max-h-0"}`}>
+
+              <Dialog.Root open={showModal} onOpenChange={setShowModal}>
+                <DefineMedicModal setOpen={setShowModal} patients={patients} setPatients={setPatients} />
+
+                {filteredPatients.map((patient, index) => (
+                  <Patient
+                    key={index}
+                    patient={patient}
+                    showPatients={showPatients}
+                    setShowModal={setShowModal}
+                  />
+                ))}
+              </Dialog.Root>
+
+            </div>
+          </div>
         )}
 
       </main>

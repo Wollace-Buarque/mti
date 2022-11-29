@@ -57,7 +57,7 @@ export default function Activities() {
       return;
     }
 
-    if (!user.medic) {
+    if (user.type !== "medic") {
       showToast("Apenas médicos podem deletar atividades!");
       return;
     }
@@ -115,7 +115,7 @@ export default function Activities() {
           </div>
         </div>
 
-        {user.medic && patient.activities?.length > 0
+        {user.type === "medic" && patient.activities?.length > 0
           ? (
             <div className="mt-8">
               <h2 className="flex items-center gap-2 text-title text-3xl">

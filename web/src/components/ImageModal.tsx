@@ -3,7 +3,7 @@ import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 interface ImageModalProps {
-  src: string;
+  src: string | undefined;
   alt?: string;
   title?: string;
   className?: string;

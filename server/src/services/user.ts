@@ -12,7 +12,7 @@ async function getUsers(response: express.Response) {
       id: true,
       name: true,
       email: true,
-      medic: true,
+      type: true,
       report: true,
       avatarUrl: true,
       createdAt: true,
@@ -112,7 +112,7 @@ async function getUserByToken(request: express.Request, response: express.Respon
       name: true,
       email: true,
       token: true,
-      medic: true,
+      type: true,
       report: true,
       avatarUrl: true,
       createdAt: true,
@@ -157,7 +157,7 @@ async function login(request: express.Request, response: express.Response) {
       name: true,
       email: true,
       token: true,
-      medic: true,
+      type: true,
       report: true,
       password: true,
       avatarUrl: true,
@@ -214,7 +214,7 @@ async function login(request: express.Request, response: express.Response) {
     name: user.name,
     email: user.email,
     token: token,
-    medic: user.medic,
+    type: user.type,
     avatarUrl: user.avatarUrl,
     createdAt: user.createdAt,
     activities: user.activities,
@@ -263,12 +263,77 @@ async function changeAvatar(request: express.Request, response: express.Response
   });
 }
 
-function fixUrl(defaultAvatarUrl: string | null, type: "report" | "avatar") {
-  if (defaultAvatarUrl && !defaultAvatarUrl.includes("http://") && !defaultAvatarUrl.includes("https://")) {
-    return `${type === "report" ? REPORTS_BASE_URL : AVATARS_BASE_URL}/${defaultAvatarUrl}`;
+async function changeType(request: express.Request, response: express.Response) {
+  const { patientEmail, adminEmail, type } = request.body;
+
+  if (type !== "patient" && type !== "medic") {
+    return response.status(200).json({
+      message: "Invalid type."
+    });
   }
 
-  return defaultAvatarUrl;
+  const admin = await prisma.user.findUnique({
+    where: {
+      email: adminEmail,
+    },
+  });
+
+  if (!admin) {
+    return response.status(200).json({
+      message: "Admin not exists."
+    });
+  }
+
+  if (admin.type !== "admin") {
+    return response.status(200).json({
+      message: "User is not an admin."
+    });
+  }
+
+  const patient = await prisma.user.findUnique({
+    where: {
+      email: patientEmail,
+    },
+  });
+
+  if (!patient) {
+    return response.status(200).json({
+      message: "Patient not exists."
+    });
+  }
+
+  if (patient.type === type) {
+    return response.status(200).json({
+      message: "Patient already has this type."
+    });
+  }
+
+  await prisma.user.update({
+    where: {
+      email: patientEmail,
+    },
+    data: {
+      type,
+    }
+  });
+
+  response.status(202).json({
+    message: "Type changed.",
+  });
+}
+
+function fixUrl(avatarUrl: string | null, type: "report" | "avatar") {
+  if (avatarUrl && !avatarUrl.includes("http://") && !avatarUrl.includes("https://")) {
+
+    switch (type) {
+      case "report":
+        return `${REPORTS_BASE_URL}/${avatarUrl}`;
+      case "avatar":
+        return `${AVATARS_BASE_URL}/${avatarUrl}`;
+    }
+  }
+
+  return avatarUrl;
 }
 
 export {
@@ -278,5 +343,6 @@ export {
   getUserByToken,
   login,
   register,
-  changeAvatar
+  changeAvatar,
+  changeType
 }

@@ -13,7 +13,7 @@ export interface User {
   name: string;
   email: string;
   token: string;
-  medic: boolean;
+  type: "patient" | "medic" | "admin";
   report?: Report;
   createdAt: Date;
   avatarUrl: string;
@@ -63,7 +63,7 @@ export const AuthenticateProvider = ({ children }: any) => {
         name: response.data.name,
         email: response.data.email,
         token: response.data.token,
-        medic: response.data.medic,
+        type: response.data.type,
         report: response.data.report,
         avatarUrl: response.data.avatarUrl,
         createdAt: new Date(response.data.createdAt),

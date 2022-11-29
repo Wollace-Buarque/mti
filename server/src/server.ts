@@ -8,7 +8,7 @@ import multerConfig from "./config/multer";
 import { createActivity, deleteActivity } from "./services/activity.js";
 import { changeReport } from "./services/reports";
 import {
-    changeAvatar, getUserByEmail, getUserById, getUserByToken, getUsers, login, register
+    changeAvatar, changeType, getUserByEmail, getUserById, getUserByToken, getUsers, login, register
 } from "./services/user";
 
 const app = express();
@@ -29,10 +29,11 @@ app.get("/id/:id", (request: express.Request, response: express.Response) => get
 app.post("/login", (request: express.Request, response: express.Response) => login(request, response));
 app.post("/register", (request: express.Request, response: express.Response) => register(request, response));
 app.post("/activity", (request: express.Request, response: express.Response) => createActivity(request, response));
+app.post("/type", (request: express.Request, response: express.Response) => changeType(request, response));
 
 app.post("/avatar", multer(multerConfig).single("file"), (request: express.Request, response: express.Response) => changeAvatar(request, response));
 app.post("/report", multer(multerConfig).single("file"), (request: express.Request, response: express.Response) => changeReport(request, response));
 
 app.delete("/activity/:id", (request: express.Request, response: express.Response) => deleteActivity(request, response));
 
-app.listen(3000, () => console.log("Servidor rodando na porta 3000!"));
+app.listen(3000, () => console.log("Server running on port 3000!"));
