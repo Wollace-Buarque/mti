@@ -8,7 +8,7 @@ export async function login(email: string, password: string) {
     });
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     return false;
   }
 }
@@ -22,7 +22,7 @@ export async function register(name: string, email: string, password: string) {
     });
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     return false;
   }
 }

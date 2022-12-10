@@ -10,9 +10,9 @@ import showToast from "../../utilities/toast";
 import Button from "../Button";
 
 interface DefineMedicModalProps {
-  setOpen: (value: boolean) => void;
   patients: Patient[];
   setPatients: (value: Patient[]) => void;
+  setOpen: (value: boolean) => void;
 }
 
 export default function DefineMedicModal(props: DefineMedicModalProps) {

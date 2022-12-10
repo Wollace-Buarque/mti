@@ -6,7 +6,6 @@ import { AuthenticateContext, User } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
 import showToast from "../../utilities/toast";
 import Button from "../Button";
-import ImageModal from "../ImageModal";
 
 interface ReportProps {
   user: User;

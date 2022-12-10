@@ -11,7 +11,6 @@ interface PatientProps {
   patient: IPatient;
   showPatients: boolean;
   setShowModal: (value: boolean) => void;
-  // trigger: boolean;
 }
 
 export default function Patient(props: PatientProps) {
@@ -21,7 +20,6 @@ export default function Patient(props: PatientProps) {
   function onAvatarError(event: any) {
     (event.target as HTMLImageElement).src = userSVG;
   }
-
 
   return (
     <Dialog.Trigger

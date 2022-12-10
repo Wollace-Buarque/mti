@@ -68,6 +68,7 @@ async function getUserById(request: express.Request, response: express.Response)
     select: {
       id: true,
       name: true,
+      type: true,
       email: true,
       report: true,
       avatarUrl: true,

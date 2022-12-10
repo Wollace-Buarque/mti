@@ -10,19 +10,14 @@ import Header from "../components/Header/Header";
 import { AuthenticateContext } from "../context/AuthenticateContext";
 import { login } from "../services/authentications";
 import showToast from "../utilities/toast";
-import Loading from "./Loading";
 
 export default function Signin() {
-  const { loading, setUser } = useContext(AuthenticateContext);
+  const { setUser } = useContext(AuthenticateContext);
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
   document.title = "Entrar - MTI";
-
-  if (loading) {
-    return <Loading login />
-  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();

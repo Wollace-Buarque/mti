@@ -1,20 +1,11 @@
-import { useContext } from "react";
-
 import idososSVG from "../assets/idosos-2.svg";
 import idosos2SVG from "../assets/idosos-3.svg";
 import Footer from "../components/Footer";
 import Header from "../components/Header/Header";
-import { AuthenticateContext } from "../context/AuthenticateContext";
-import Loading from "./Loading";
 
 export default function About() {
-  const { loading } = useContext(AuthenticateContext);
 
   document.title = "Sobre - MTI";
-
-  if (loading) {
-    return <Loading about />
-  }
 
   return (
     <>
@@ -37,7 +28,7 @@ export default function About() {
 
               <p>
                 O MTI é um projeto que visa a saúde dos idosos, buscando auxiliar de forma rápida e prática as necessidades
-                decorrentes que muitas pessoas da terceira idade têm dificuldade de planejar e realizar algumas tarefas.  
+                decorrentes que muitas pessoas da terceira idade têm dificuldade de planejar e realizar algumas tarefas.
               </p>
 
               <p>
@@ -65,11 +56,11 @@ export default function About() {
               </p>
 
               <p>
-                Uma rotina saudável: Visando criar uma rotina de exercícios e uma dieta para melhorar a qualidade de vida dos idosos.              
+                Uma rotina saudável: Visando criar uma rotina de exercícios e uma dieta para melhorar a qualidade de vida dos idosos.
               </p>
 
               <p>
-                Diagnósticos: Um espaço para o registro de problemas médicos, enviados para os hospitais.            
+                Diagnósticos: Um espaço para o registro de problemas médicos, enviados para os hospitais.
               </p>
               <p>
                 Auxílio emergencial: Para que em casos de emergências, o Responsável possa contatar o hospital mais próximo da sua localização.

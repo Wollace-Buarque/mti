@@ -26,8 +26,8 @@ module.exports = {
       },
       animation: {
         show: "show 0.75s ease-in-out forwards",
-        hide: "hide 0.5s ease-in-out forwards",
         grow: "grow 450ms ease-in-out",
+        "spin-slow": "spin-slow 1568ms linear infinite", // 2s
         "spin-one-time": "spin 500ms linear",
       },
       keyframes: {
@@ -35,14 +35,11 @@ module.exports = {
           "0%": { transform: "scaleX(0)" },
           "100%": { transform: "scaleX(1)" }
         },
-        show: {
-          "0%": { opacity: 0 },
-          "100%": { opacity: 1 }
+        "spin-slow": {
+          to: {
+            transform: "rotate(360deg)"
+          }
         },
-        hide: {
-          "0%": { opacity: 1, transform: "translateY(0)" },
-          "100%": { opacity: 0, transform: "translateY(10px)" }
-        }
       },
     },
     plugins: [],

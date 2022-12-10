@@ -29,6 +29,7 @@ export default function Activities() {
       setPatient({
         id: response.data.id,
         name: response.data.name,
+        type: response.data.type,
         email: response.data.email,
         report: response.data.report,
         avatarUrl: response.data.avatarUrl,
@@ -39,9 +40,13 @@ export default function Activities() {
 
   }, []);
 
+  document.title = "Paciente - MTI";
+
   if (!user || !patient || loading) {
     return <Loading />;
   }
+
+  document.title = `${patient.name} - MTI`;
 
   function activitySearcher(value: string) {
     if (!patient) return;

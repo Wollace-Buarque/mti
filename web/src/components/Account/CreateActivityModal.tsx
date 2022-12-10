@@ -12,9 +12,9 @@ import Button from "../Button";
 import FormGroup from "../FormGroup";
 
 interface CreateActivityModalProps {
-  setOpen: (value: boolean) => void;
   patients: Patient[];
   setPatients: (value: Patient[]) => void;
+  setOpen: (value: boolean) => void;
 }
 
 export default function CreateActivityModal(props: CreateActivityModalProps) {

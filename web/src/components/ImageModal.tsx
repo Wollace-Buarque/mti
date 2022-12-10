@@ -20,14 +20,13 @@ export default function ImageModal(props: ImageModalProps) {
           alt={props.alt}
           title={props.title}
           className={`cursor-pointer ${props.className}`}
-          draggable={props.draggable}
-        />
+          draggable={props.draggable} />
       </Dialog.Trigger>
 
       <Dialog.Portal>
         <Dialog.Overlay className="bg-black/60 inset-0 fixed" >
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 
-    -translate-y-1/2 w-[95%] sm:w-[725px] max-h-[700px] shadow-lg shadow-black/25">
+          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[725px]
+           max-h-[700px] shadow-lg shadow-black/25">
 
             <img
               className="w-full h-full sm:max-h-[700px] rounded"

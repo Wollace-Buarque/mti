@@ -1,5 +1,5 @@
 import { Eye, EyeClosed } from "phosphor-react";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import logoMTI from "../assets/logo.png";
@@ -7,20 +7,15 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
-import { AuthenticateContext } from "../context/AuthenticateContext";
 import { register } from "../services/authentications";
 import showToast from "../utilities/toast";
-import Loading from "./Loading";
 
 export default function Signup() {
-  const { loading } = useContext(AuthenticateContext);
   const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
 
-  if (loading) {
-    return <Loading login />
-  }
+
+  document.title = "Cadastrar - MTI";
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();

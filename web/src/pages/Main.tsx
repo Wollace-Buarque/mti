@@ -25,10 +25,6 @@ export default function Main() {
 
   }, []);
 
-  if (loading) {
-    return <Loading index />;
-  }
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header index />
