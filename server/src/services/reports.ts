@@ -43,12 +43,12 @@ async function changeReport(request: express.Request, response: express.Response
       message: "Could not change report."
     });
   }
-  
+
   report.reportUrl = `${REPORTS_BASE_URL}/${report?.reportUrl}`;
 
   response.status(202).json({
     message: "Report changed.",
-    report: report
+    report
   });
 }
 

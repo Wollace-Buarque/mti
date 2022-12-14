@@ -19,7 +19,7 @@ export default function Header(props: HeaderProps) {
     <header className="h-32 sm:h-16 border-b border-line">
       <div className="max-w-5xl mx-auto flex flex-col justify-center sm:justify-between sm:flex-row items-center h-full">
 
-        <Link to="/" className="font-fire text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-500 hover:scale-[1.06] transition-transform duration-300 mt-7 sm:mt-0">
+        <Link to="/" className="font-fire text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-500 hover:scale-[1.06] transition-transform duration-300 mt-7 sm:mt-0 selection:text-description">
           MTI
         </Link>
 

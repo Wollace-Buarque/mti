@@ -39,7 +39,7 @@ export default function Activity(props: ActivityProps) {
 
       </div>
 
-      <p className="mt-3 ml-1 text-description max-h-72 overflow-y-auto break-words">
+      <p className="mt-3 ml-1 pr-1 text-description max-h-72 overflow-y-auto break-words">
         {props.activity.description}
       </p>
     </div>

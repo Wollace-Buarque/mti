@@ -1,4 +1,6 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 
 import { prisma } from "../server";
 import { accountExists, comparePassword, createAccount } from "./account";
@@ -27,7 +29,6 @@ async function getUsers(response: express.Response) {
 
     return current;
   }, []);
-
 
   return response.json(users);
 }
@@ -104,7 +105,7 @@ async function getUserById(request: express.Request, response: express.Response)
 async function getUserByToken(request: express.Request, response: express.Response) {
   const { token } = request.params;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
       token,
     },
@@ -196,7 +197,7 @@ async function login(request: express.Request, response: express.Response) {
     });
   }
 
-  const token = Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
+  var token = Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
 
   await prisma.user.update({
     where: {
@@ -243,22 +244,43 @@ async function register(request: express.Request, response: express.Response) {
 async function changeAvatar(request: express.Request, response: express.Response) {
   const { email } = request.body;
 
-  const user = await prisma.user.update({
+  const oldUser = await prisma.user.findUnique({
     where: {
-      email,
+      email
     },
-    data: {
-      avatarUrl: request.file?.filename,
+    select: {
+      avatarUrl: true
     }
   });
 
-  if (!user) {
+  if (!oldUser) {
     return response.status(200).json({
       message: "Account not exists."
     });
   }
 
-  response.status(202).json({
+  const oldAvatar = oldUser.avatarUrl;
+
+  let user;
+
+  try {
+    user = await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        avatarUrl: request.file?.filename,
+      }
+    });
+
+    if (oldAvatar) fs.unlinkSync(path.resolve(__dirname, "..", "..", "database", "images", oldAvatar));
+  } catch (error) {
+    return response.status(200).json({
+      message: "Error while tried to change avatar!"
+    });
+  }
+
+  return response.status(202).json({
     message: "Avatar changed.",
     avatarUrl: `${AVATARS_BASE_URL}/${user.avatarUrl}`
   });

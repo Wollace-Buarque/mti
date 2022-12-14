@@ -15,7 +15,7 @@ model User {
   name      String
   type      String   @default("patient")
   email     String   @unique
-  token     String?
+  token     String?  @unique
   password  String
   avatarUrl String?
   createdAt DateTime @default(now())

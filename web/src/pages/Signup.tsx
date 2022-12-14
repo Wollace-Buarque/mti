@@ -15,7 +15,7 @@ export default function Signup() {
   const navigate = useNavigate();
 
 
-  document.title = "Cadastrar - MTI";
+  document.title = "Cadastro - MTI";
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();

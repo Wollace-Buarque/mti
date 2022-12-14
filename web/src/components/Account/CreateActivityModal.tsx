@@ -162,8 +162,8 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
             <div className="flex gap-2">
               <Button title="Adicionar" />
 
-              <Dialog.Close asChild>
-                <Button title="Cancelar" />
+              <Dialog.Close className="text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold hover:brightness-90 transition-[filter] duration-300">
+                Cancelar
               </Dialog.Close>
             </div>
           </form>

@@ -1,0 +1,3 @@
+.toast {
+  @apply !bg-button-base !text-button-text !p-2 !px-3 !rounded-full;
+}

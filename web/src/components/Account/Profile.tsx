@@ -1,6 +1,7 @@
 import { X } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import userSVG from "../../assets/user.svg";
@@ -57,15 +58,25 @@ export default function Profile() {
     uploadData.append("type", "avatar");
     uploadData.append("file", await blobToImageFile(croppedImage as string, file.name).then(file => file));
 
-    server.post("/avatar", uploadData).then(response => {
-      setUser({
-        ...user,
-        avatarUrl: response.data.avatarUrl
-      });
-    });
+    toast.promise(
+      server.post("/avatar", uploadData).then(response => {
+        setUser({
+          ...user,
+          avatarUrl: response.data.avatarUrl
+        });
+      }),
+      {
+        loading: "Enviando...",
+        success: "Foto de perfil atualizada.",
+        error: "Ocorreu um erro ao atualizar a foto de perfil."
+      },
+      {
+        icon: null,
+        className: "toast",
+      }
+    )
 
     setFile(null);
-    showToast("Foto de perfil atualizada.", 500);
   }
 
   function onAvatarError(event: any) {

@@ -172,7 +172,7 @@ export default function Activities() {
 
                     </div>
 
-                    <p className="mt-3 ml-1 text-description max-h-72 overflow-y-auto">
+                    <p className="mt-3 ml-1 pr-1 text-description max-h-72 overflow-y-auto break-words">
                       {activity.description}
                     </p>
                   </div>
@@ -189,9 +189,13 @@ export default function Activities() {
         {patient.report && (
           <div className="mt-4">
 
-            <h2 className="flex items-center gap-2 text-title text-3xl">
+            <h2 className="text-title text-3xl">
               Relatório médico
             </h2>
+
+            <p className="text-sm text-[#AAA]">
+              Atualizado em {new Date(patient.report.updatedAt).toLocaleString("pt-BR", { dateStyle: "long" })}
+            </p>
 
             <ImageModal
               src={patient.report.reportUrl}

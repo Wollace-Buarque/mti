@@ -25,19 +25,19 @@ export default function ImageModal(props: ImageModalProps) {
 
       <Dialog.Portal>
         <Dialog.Overlay className="bg-black/60 inset-0 fixed" >
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[725px]
-           max-h-[700px] shadow-lg shadow-black/25">
+          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[825px]
+           max-h-[700px]">
 
             <img
-              className="w-full h-full sm:max-h-[700px] rounded"
+              className="w-full h-full sm:max-h-[700px] rounded shadow-image"
               src={props.src}
               alt={props.alt}
               title={props.title}
               draggable={false} />
 
-            <Dialog.Close>
+            <Dialog.Close title="Fechar imagem">
               <X
-                className="absolute top-2 right-2"
+                className="absolute top-2 right-2 hover:animate-spin-one-time"
                 color="#EBA417"
                 size={30} />
             </Dialog.Close>
