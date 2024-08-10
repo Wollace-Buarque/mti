@@ -17,13 +17,15 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const [file, setFile] = useState<File | null>(null);
-  const [croppedImage, setCroppedImage] = useState<unknown | undefined>(undefined)
+  const [croppedImage, setCroppedImage] = useState<unknown | undefined>(
+    undefined,
+  );
 
   const [isOpenCropModal, setIsOpenCropModal] = useState(false);
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
-      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"]
+      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"],
     },
     maxFiles: 1,
   });
@@ -56,25 +58,30 @@ export default function Profile() {
     const uploadData = new FormData();
     uploadData.append("email", user.email);
     uploadData.append("type", "avatar");
-    uploadData.append("file", await blobToImageFile(croppedImage as string, file.name).then(file => file));
+    uploadData.append(
+      "file",
+      await blobToImageFile(croppedImage as string, file.name).then(
+        (file) => file,
+      ),
+    );
 
     toast.promise(
-      server.post("/avatar", uploadData).then(response => {
+      server.post("/avatar", uploadData).then((response) => {
         setUser({
           ...user,
-          avatarUrl: response.data.avatarUrl
+          avatarUrl: response.data.avatarUrl,
         });
       }),
       {
         loading: "Enviando...",
         success: "Foto de perfil atualizada.",
-        error: "Ocorreu um erro ao atualizar a foto de perfil."
+        error: "Ocorreu um erro ao atualizar a foto de perfil.",
       },
       {
         icon: null,
         className: "toast",
-      }
-    )
+      },
+    );
 
     setFile(null);
   }
@@ -90,48 +97,59 @@ export default function Profile() {
           open={isOpenCropModal}
           setOpen={setIsOpenCropModal}
           image={URL.createObjectURL(file)}
-          onCropComplete={setCroppedImage} />
+          onCropComplete={setCroppedImage}
+        />
       )}
 
-      <div className="flex justify-between h-fit">
+      <div className="flex justify-center sm:justify-start h-fit relative">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          <div className="flex flex-col gap-2 relative">
+          <div className="w-fit mx-auto">
             <input {...getInputProps()} />
 
             <img
               {...getRootProps()}
               onError={onAvatarError}
-              className="w-40 h-40 max-w-[10rem] max-h-40 rounded-full shadow-image cursor-pointer hover:opacity-75 transition-opacity duration-300"
-              // src={file ? URL.createObjectURL(file) : (user?.avatarUrl ?? userSVG)}
-              src={croppedImage ? (croppedImage as string) : (user?.avatarUrl ?? userSVG)}
-              width={160} height={160} draggable={false} />
-
-            <Button
-              className={`${file ? "opacity-100 visible" : "opacity-0 invisible"} absolute top-24 left-56 sm:left-[11.5rem] transition-all duration-500 w-1/2 sm:w-full`}
-              onClick={uploadAvatar}
-              title="Enviar" />
+              className="size-40 max-w-40 max-h-40 rounded-full shadow-image cursor-pointer hover:opacity-75 transition-opacity duration-300"
+              src={
+                croppedImage
+                  ? (croppedImage as string)
+                  : (user?.avatarUrl ?? userSVG)
+              }
+              draggable={false}
+            />
           </div>
 
-          <div>
-            <h3 className="text-2xl text-title text-semibold">
-              {user?.name}
-            </h3>
+          <div className="text-center sm:text-left">
+            <h3 className="text-2xl text-title text-semibold">{user?.name}</h3>
+
+            <span className="text-sm text-description block mt-1.5 truncate">
+              {user?.email}
+            </span>
 
             <span className="text-sm text-description">
-              Desde {user?.createdAt.toLocaleString("pt-BR", { dateStyle: "long" })}
+              Desde{" "}
+              {user?.createdAt.toLocaleString("pt-BR", { dateStyle: "long" })}
             </span>
+
+            <Button
+              className={`${file ? "block" : "hidden"} w-full`}
+              onClick={uploadAvatar}
+              title="Enviar"
+            />
           </div>
         </div>
 
         <button
           onClick={handleExit}
-          className="uppercase font-semibold h-fit"
+          className="uppercase font-semibold h-fit absolute top-2 right-2 sm:top-8 sm:right-8"
           title="Sair da conta"
-          type="button">
+          type="button"
+        >
           <X
             size={20}
             color="#EBA417"
-            className="hover:animate-spin-one-time mt-8 sm:mt-0" />
+            className="hover:animate-spin-one-time"
+          />
         </button>
       </div>
     </>
