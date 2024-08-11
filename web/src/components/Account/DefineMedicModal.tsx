@@ -106,7 +106,7 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
               : "Definir como paciente"}
           </Dialog.Title>
 
-          <div className="flex flex-col justify-center items-center gap-4 sm:gap-0 mb-5">
+          <Dialog.Description className="flex flex-col justify-center items-center gap-4 sm:gap-0 mb-5">
             <img
               onError={(event) => (event.currentTarget.src = userSVG)}
               className="size-44 rounded-full shadow-image sm:mb-5"
@@ -122,7 +122,7 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
             <span className="text-description text-center sm:text-start">
               {patient.email}
             </span>
-          </div>
+          </Dialog.Description>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div className="flex gap-2">
