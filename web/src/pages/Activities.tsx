@@ -1,55 +1,71 @@
 import { useContext, useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
-import { Trash } from "phosphor-react";
+import { Navigate, useParams } from "react-router-dom";
 
 import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
 import { Patient } from "../context/PatientContext";
 
-import * as HoverCard from "@radix-ui/react-hover-card";
-
-import MedicCard from "../components/Account/MedicCard";
 import Header from "../components/Header/Header";
-import ImageModal from "../components/ImageModal";
 import Searcher from "../components/Searcher";
 import showToast from "../utilities/toast";
 import Loading from "./Loading";
-
+import { ActivityItem } from "../components/activities/activity-item";
 
 import { server } from "../services/server";
-import { secondsFormatter } from "../utilities/secondsFormatter";
 
 import userSVG from "../assets/user.svg";
+import { ReportSummary } from "../components/report-summary";
+
+async function fetchPatient(id: string | undefined) {
+  const { data } = await server.get(`/id/${id}`);
+
+  if (!data.found) {
+    return null;
+  }
+
+  return {
+    id: data.id,
+    name: data.name,
+    type: data.type,
+    email: data.email,
+    report: data.report,
+    avatarUrl: data.avatarUrl,
+    activities: data.activities,
+    createdAt: new Date(data.createdAt),
+  };
+}
 
 export default function Activities() {
   const { user, loading } = useContext(AuthenticateContext);
   const { id } = useParams();
 
-  const [patient, setPatient] = useState<Patient>();
+  const [patient, setPatient] = useState<Patient | null>();
+  const [isLoadingPatient, setIsLoadingPatient] = useState(true);
   const [filteredActivities, setFilteredActivities] = useState<Activity[]>([]);
 
+  const isMedic = user?.type === "medic";
+  const isAdmin = user?.type === "admin";
+  const hasActivities = (patient?.activities?.length || 0) > 0;
+
   useEffect(() => {
-    server.get(`/id/${id}`).then((response) => {
-      setPatient({
-        id: response.data.id,
-        name: response.data.name,
-        type: response.data.type,
-        email: response.data.email,
-        report: response.data.report,
-        avatarUrl: response.data.avatarUrl,
-        activities: response.data.activities,
-        createdAt: new Date(response.data.createdAt),
-      });
-    });
-  }, []);
+    setIsLoadingPatient(true);
+
+    fetchPatient(id)
+      .then((data) => setPatient(data))
+      .finally(() => setIsLoadingPatient(false));
+  }, [id]);
 
   document.title = "Paciente - MTI";
 
-  if (!user || !patient || loading) {
+  if (loading || isLoadingPatient) {
     return <Loading />;
   }
 
-  document.title = `${patient.name} - MTI`;
+  if (!loading && !isLoadingPatient && !patient) {
+    return <Navigate to="/" />;
+  }
+
+  document.title = `${patient?.name} - MTI`;
 
   function activitySearcher(value: string) {
     if (!patient) return;
@@ -67,8 +83,8 @@ export default function Activities() {
       return;
     }
 
-    if (user.type !== "medic") {
-      showToast("Apenas médicos podem deletar atividades!");
+    if (!isAdmin && !isMedic) {
+      showToast("Você não pode realizar esta ação!");
       return;
     }
 
@@ -97,7 +113,7 @@ export default function Activities() {
       });
 
       setFilteredActivities(newActivities);
-    } catch (error: any) {
+    } catch (error) {
       showToast("Ocorreu um erro ao tentar deletar atividade!");
     }
   }
@@ -110,10 +126,8 @@ export default function Activities() {
         <div className="flex flex-col sm:flex-row sm:items-center gap-6 h-fit">
           <img
             onError={(event) => (event.currentTarget.src = userSVG)}
-            className="size-40 max-w-40 max-h-40 rounded-full shadow-image"
+            className="size-40 rounded-full shadow-image"
             src={patient?.avatarUrl ?? userSVG}
-            width={160}
-            height={160}
             draggable={false}
           />
 
@@ -121,6 +135,10 @@ export default function Activities() {
             <h3 className="text-2xl text-title text-semibold">
               {patient?.name}
             </h3>
+
+            <span className="text-sm text-description block mt-1.5">
+              {patient?.email}
+            </span>
 
             <span className="text-sm text-description">
               Desde{" "}
@@ -131,7 +149,11 @@ export default function Activities() {
           </div>
         </div>
 
-        {user.type === "medic" && patient.activities?.length > 0 ? (
+        {!hasActivities && (
+          <p className="text-3xl mt-7">Nenhuma atividade encontrada.</p>
+        )}
+
+        {(isMedic || isAdmin) && hasActivities && (
           <div className="mt-8">
             <h2 className="flex items-center gap-2 text-title text-3xl">
               Atividades
@@ -140,67 +162,22 @@ export default function Activities() {
             <Searcher className="my-2" onChangeHandler={activitySearcher} />
 
             <div className="max-h-[650px] overflow-y-hidden hover:overflow-y-auto">
-              {filteredActivities.map((activity, index) => (
-                <div key={index} className="my-7 first:mt-4">
-                  <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-line">
-                    <div className="flex items-center gap-1">
-                      <h3 className="text-2xl">{activity.name}</h3>
-
-                      <span className="text-button-base text-2xl">–</span>
-
-                      <span className="text-sm text-[#AAA]">
-                        {secondsFormatter(activity.duration)} de duração
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 items-end">
-                      <HoverCard.Root>
-                        <MedicCard medic={activity.author} />
-
-                        <span className="text-sm text-[#AAA]">
-                          Indicada por{" "}
-                          <HoverCard.Trigger className="underline cursor-pointer">
-                            {activity.author.name}
-                          </HoverCard.Trigger>
-                        </span>
-                      </HoverCard.Root>
-
-                      <button
-                        title={`Deletar atividade ${activity.name} do médico ${activity.author.name}`}
-                        className="absolute ml-60"
-                        onClick={() => removeActivity(activity.id)}
-                      >
-                        <Trash className="text-gray-400 hover:text-red-500" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <p className="mt-3 ml-1 pr-1 text-description max-h-72 overflow-y-auto break-words">
-                    {activity.description}
-                  </p>
-                </div>
+              {filteredActivities.map((activity) => (
+                <ActivityItem
+                  key={activity.id}
+                  activity={activity}
+                  removeAction={removeActivity}
+                />
               ))}
             </div>
           </div>
-        ) : (
-          <p className="text-3xl mt-7">Nenhuma atividade encontrada.</p>
         )}
 
-        {patient.report && (
+        {patient?.report && (
           <div className="mt-4">
-            <h2 className="text-title text-3xl">Relatório médico</h2>
-
-            <p className="text-sm text-[#AAA]">
-              Atualizado em{" "}
-              {new Date(patient.report.updatedAt).toLocaleString("pt-BR", {
-                dateStyle: "long",
-              })}
-            </p>
-
-            <ImageModal
-              src={patient.report.reportUrl}
-              className="w-full h-full oject-cover shadow-elevation rounded mt-4"
-              draggable={false}
+            <ReportSummary
+              updatedAt={new Date(patient.report.updatedAt)}
+              reportUrl={patient.report.reportUrl}
             />
           </div>
         )}
