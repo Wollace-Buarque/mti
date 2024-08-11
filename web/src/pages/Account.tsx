@@ -6,11 +6,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Activity from "../components/Account/Activity";
 import CreateActivityModal from "../components/Account/CreateActivityModal";
 import DefineMedicModal from "../components/Account/DefineMedicModal";
-import Patient from "../components/Account/Patient";
 import Report from "../components/Account/Report";
 import Footer from "../components/Footer";
 import Header from "../components/Header/Header";
 import Searcher from "../components/Searcher";
+import { Patient } from "../components/Account/Patient";
 import { Profile } from "../components/Account/Profile";
 
 import {
@@ -119,7 +119,6 @@ export default function Account() {
                     key={index}
                     patient={patient}
                     showPatients={showPatients}
-                    setShowModal={setShowModal}
                   />
                 ))}
               </Dialog.Root>
@@ -206,7 +205,6 @@ export default function Account() {
                     key={index}
                     patient={patient}
                     showPatients={showPatients}
-                    setShowModal={setShowModal}
                   />
                 ))}
               </Dialog.Root>
