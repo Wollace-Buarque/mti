@@ -3,21 +3,24 @@ import fs from "fs";
 import multer from "multer";
 import path from "path";
 
-const destination = path.resolve(__dirname, "..", "..", "database", "images");
-const reports = path.resolve(__dirname, "..", "..", "database", "reports");
+const AVATARS_URL = path.resolve(__dirname, "..", "..", "database", "images");
+const REPORTS_URL = path.resolve(__dirname, "..", "..", "database", "reports");
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export default {
-  destination,
-  reports,
+  limits: {
+    fileSize: MAX_FILE_SIZE,
+  },
+  destination: AVATARS_URL,
+  reports: REPORTS_URL,
   storage: multer.diskStorage({
-    destination: (request, file, callback) => {
-
+    destination: (request, _, callback) => {
       switch (request.body.type) {
         case "avatar":
-          callback(null, destination);
+          callback(null, AVATARS_URL);
           break;
         case "report":
-          callback(null, reports);
+          callback(null, REPORTS_URL);
           break;
         default:
           console.warn("Invalid request type.");
@@ -31,23 +34,23 @@ export default {
       callback(null, fileName);
 
       request.on("aborted", () => {
-
-        fs.unlinkSync(path.resolve(__dirname, "..", "..", "database", "images", fileName));
-
+        fs.unlinkSync(
+          path.resolve(__dirname, "..", "..", "database", "images", fileName),
+        );
       });
-    }
+    },
   }),
-  fileFilter: (request: any, file: any, callback: any) => {
+  fileFilter: (_: any, file: any, callback: any) => {
     const allowedMimes = [
-      // "image/gif",
       "image/jpeg",
       "image/pjpeg",
-      "image/png"];
+      "image/png",
+    ];
 
     if (allowedMimes.includes(file.mimetype)) {
       callback(null, true);
     } else {
       callback(new Error("Invalid file type."));
     }
-  }
-}
+  },
+};
