@@ -2,8 +2,12 @@ import express from "express";
 
 import { prisma } from "../server.js";
 
-async function createActivity(request: express.Request, response: express.Response) {
-  const { name, duration, description, authorEmail, patientEmail } = request.body;
+async function createActivity(
+  request: express.Request,
+  response: express.Response,
+) {
+  const { name, duration, description, authorEmail, patientEmail } =
+    request.body;
 
   if (!name || !authorEmail || !duration || !description || !patientEmail) {
     response.status(400).send("Missing parameters");
@@ -13,7 +17,7 @@ async function createActivity(request: express.Request, response: express.Respon
   const user = await prisma.user.findUnique({
     where: {
       email: patientEmail,
-    }
+    },
   });
 
   if (!user) {
@@ -24,7 +28,7 @@ async function createActivity(request: express.Request, response: express.Respon
   const author = await prisma.user.findUnique({
     where: {
       email: authorEmail,
-    }
+    },
   });
 
   if (!author) {
@@ -45,14 +49,14 @@ async function createActivity(request: express.Request, response: express.Respon
       user: {
         connect: {
           email: user.email,
-        }
+        },
       },
       author: {
         connect: {
           email: author.email,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
   return response.status(200).send({
@@ -61,13 +65,16 @@ async function createActivity(request: express.Request, response: express.Respon
   });
 }
 
-async function deleteActivity(request: express.Request, response: express.Response) {
+async function deleteActivity(
+  request: express.Request,
+  response: express.Response,
+) {
   const { id } = request.params;
 
   const activity = await prisma.activity.findUnique({
     where: {
       id: parseInt(id),
-    }
+    },
   });
 
   if (!activity) {
@@ -83,7 +90,4 @@ async function deleteActivity(request: express.Request, response: express.Respon
   return response.status(202).send("Activity deleted");
 }
 
-export {
-  createActivity,
-  deleteActivity
-}
+export { createActivity, deleteActivity };

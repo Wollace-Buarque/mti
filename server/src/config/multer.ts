@@ -41,11 +41,7 @@ export default {
     },
   }),
   fileFilter: (_: any, file: any, callback: any) => {
-    const allowedMimes = [
-      "image/jpeg",
-      "image/pjpeg",
-      "image/png",
-    ];
+    const allowedMimes = ["image/jpeg", "image/pjpeg", "image/png"];
 
     if (allowedMimes.includes(file.mimetype)) {
       callback(null, true);

@@ -8,7 +8,7 @@ async function createAccount(name: string, email: string, password: string) {
       name,
       email,
       password: bcrypt.hashSync(password, 10),
-    }
+    },
   });
 
   return user;
@@ -18,7 +18,7 @@ async function accountExists(email: string) {
   const user = await prisma.user.findUnique({
     where: {
       email,
-    }
+    },
   });
 
   return !!user;
