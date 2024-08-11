@@ -16,9 +16,9 @@ export default function Searcher(props: SearcherProps) {
 
   return (
     <div className={`flex items-center ${className}`} {...rest}>
-      <div className="flex items-center group w-full">
+      <div className="group flex w-full items-center">
         <input
-          className="p-2 pl-5 w-full bg-transparent border border-line outline-none rounded-l-full group-hover:border-button-base focus:border-button-base"
+          className="w-full rounded-l-full border border-line bg-transparent p-2 pl-5 outline-none focus:border-button-base group-hover:border-button-base"
           value={value}
           placeholder="Pesquisar"
           onChange={(event) => setValue(event.target.value)}
@@ -26,7 +26,7 @@ export default function Searcher(props: SearcherProps) {
       </div>
 
       <MagnifyingGlass
-        className="box-content py-2 px-3 bg-[#222222] border border-l-0 border-line rounded-r-full cursor-pointer"
+        className="box-content cursor-pointer rounded-r-full border border-l-0 border-line bg-[#222222] px-3 py-2"
         onClick={props.onSearchClicker}
         size={24}
       />

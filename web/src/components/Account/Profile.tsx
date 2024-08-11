@@ -1,4 +1,5 @@
 import { X } from "@phosphor-icons/react";
+import cx from "classnames";
 import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
@@ -127,15 +128,15 @@ export function Profile() {
         />
       )}
 
-      <div className="flex justify-center sm:justify-start h-fit relative">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          <div className="w-fit mx-auto">
+      <div className="relative flex justify-center sm:justify-start">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+          <div className="mx-auto w-fit">
             <input {...getInputProps()} />
 
             <img
               {...getRootProps()}
               onError={onAvatarError}
-              className="size-40 rounded-full shadow-image cursor-pointer hover:opacity-75 transition-opacity duration-300"
+              className="size-40 cursor-pointer rounded-full shadow-image transition-opacity duration-300 hover:opacity-75"
               src={
                 croppedImage
                   ? (croppedImage as string)
@@ -146,9 +147,9 @@ export function Profile() {
           </div>
 
           <div className="text-center sm:text-left">
-            <h3 className="text-2xl text-title text-semibold">{user?.name}</h3>
+            <h3 className="text-semibold text-2xl text-title">{user?.name}</h3>
 
-            <span className="text-sm text-description block mt-1.5 truncate">
+            <span className="mt-1.5 block truncate text-sm text-description">
               {user?.email}
             </span>
 
@@ -160,7 +161,7 @@ export function Profile() {
             <Button
               onClick={uploadAvatar}
               isLoading={isUploading}
-              className={`${file ? "block" : "hidden"} w-full mt-2`}
+              className={cx("mt-2 flex", { hidden: !file })}
             >
               {user?.avatarUrl ? "Atualizar foto" : "Enviar foto"}
             </Button>
@@ -169,7 +170,7 @@ export function Profile() {
 
         <button
           onClick={handleExit}
-          className="uppercase font-semibold h-fit absolute top-2 right-2 sm:top-8 sm:right-8"
+          className="absolute right-2 top-2 h-fit font-semibold uppercase sm:right-8 sm:top-8"
           title="Sair da conta"
           type="button"
         >

@@ -7,7 +7,17 @@ interface PatientContextData {
   setPatient: (patient: Patient | null) => void;
 }
 
-export type Patient = Pick<User, "id" | "name" | "email" | "type" | "report" | "activities" | "avatarUrl" | "createdAt">;
+export type Patient = Pick<
+  User,
+  | "id"
+  | "name"
+  | "email"
+  | "type"
+  | "report"
+  | "activities"
+  | "avatarUrl"
+  | "createdAt"
+>;
 
 export const PatientContext = createContext({} as PatientContextData);
 

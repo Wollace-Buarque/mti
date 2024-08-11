@@ -3,7 +3,7 @@ import { FormEvent, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import logoMTI from "../assets/logo.png";
-import { Button }from "../components/Button";
+import { Button } from "../components/Button";
 import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
@@ -66,14 +66,14 @@ export default function Signin() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header signin />
 
-      <main className="max-w-5xl mx-auto w-full flex flex-col gap-8 sm:gap-0 sm:flex-row items-center justify-between flex-1 py-6 sm:py-0">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-between gap-8 py-6 sm:flex-row sm:gap-0 sm:py-0">
         <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
 
-        <div className="w-11/12 sm:w-2/5 bg-black/40 p-6 rounded-lg">
-          <h1 className="text-4xl text-title mb-6">Entrar</h1>
+        <div className="w-11/12 rounded-lg bg-black/40 p-6 sm:w-2/5">
+          <h1 className="mb-6 text-4xl text-title">Entrar</h1>
 
           <form onSubmit={handleSubmit}>
             <FormGroup
@@ -108,7 +108,7 @@ export default function Signin() {
             <Button title="Entrar" />
           </form>
 
-          <div className="flex flex-col mt-4 text-sm text-description">
+          <div className="mt-4 flex flex-col text-sm text-description">
             <a className="underline" href="#">
               Esqueceu sua senha?
             </a>

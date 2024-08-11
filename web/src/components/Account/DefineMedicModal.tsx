@@ -6,7 +6,7 @@ import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
 import { showToast } from "../../utilities/toast";
-import { Button }from "../Button";
+import { Button } from "../Button";
 
 interface DefineMedicModalProps {
   patients: Patient[];
@@ -98,15 +98,15 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-black/60 inset-0 fixed">
-        <Dialog.Content className="bg-[#181818] fixed py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[95%] sm:w-[550px] max-h-[750px] shadow-lg shadow-black/25">
-          <Dialog.Title className="text-3xl text-center font-inter font-black mb-6">
+      <Dialog.Overlay className="fixed inset-0 bg-black/60">
+        <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[750px] w-[95%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#181818] px-10 py-8 text-white shadow-lg shadow-black/25 sm:w-[550px]">
+          <Dialog.Title className="mb-6 text-center font-inter text-3xl font-black">
             {patient.type === "patient"
               ? "Definir como médico"
               : "Definir como paciente"}
           </Dialog.Title>
 
-          <Dialog.Description className="flex flex-col justify-center items-center gap-4 sm:gap-0 mb-5">
+          <Dialog.Description className="mb-5 flex flex-col items-center justify-center gap-4 sm:gap-0">
             <img
               onError={(event) => (event.currentTarget.src = userSVG)}
               className="size-44 rounded-full shadow-image sm:mb-5"
@@ -115,11 +115,11 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
               draggable={false}
             />
 
-            <span className="text-xl text-description text-center sm:text-start">
+            <span className="text-center text-xl text-description sm:text-start">
               {patient.name}
             </span>
 
-            <span className="text-description text-center sm:text-start">
+            <span className="text-center text-description sm:text-start">
               {patient.email}
             </span>
           </Dialog.Description>
@@ -128,7 +128,7 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
             <div className="flex gap-2">
               <Button title="Definir" />
 
-              <Dialog.Close className="text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold hover:brightness-90 transition-[filter] duration-300">
+              <Dialog.Close className="mt-4 w-full rounded bg-button-base py-3 text-center font-semibold text-button-text transition-[filter] duration-300 hover:brightness-90">
                 Cancelar
               </Dialog.Close>
             </div>

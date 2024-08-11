@@ -18,41 +18,50 @@ export default function Main() {
   document.title = "Início - MTI";
 
   useEffect(() => {
-
-    server.get("/users").then(response => {
-      setMedics(response.data.filter((user: Medic) => user.avatarUrl !== null && user.type === "medic").sort());
+    server.get("/users").then((response) => {
+      setMedics(
+        response.data
+          .filter(
+            (user: Medic) => user.avatarUrl !== null && user.type === "medic",
+          )
+          .sort(),
+      );
     });
-
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header index />
 
-      <main className="max-w-5xl mx-auto flex-1 flex flex-col justify-center my-8">
-
+      <main className="mx-auto my-8 flex max-w-5xl flex-1 flex-col justify-center">
         <Medics medics={medics} />
 
-        <div className="flex flex-col-reverse sm:flex-row gap-7 px-4 sm:px-0 w-full h-full">
-          <div className="flex flex-col justify-center items-center sm:items-start text-center sm:text-justify">
-            <h2 className="text-title text-4xl font-inter font-bold mb-7 sm:text-left">
+        <div className="flex h-full w-full flex-col-reverse gap-7 px-4 sm:flex-row sm:px-0">
+          <div className="flex flex-col items-center justify-center text-center sm:items-start sm:text-justify">
+            <h2 className="mb-7 font-inter text-4xl font-bold text-title sm:text-left">
               Sua saúde em primeiro lugar!
             </h2>
 
             <p className="mb-6">
-              Com o envelhecimento da população, a chegada de doenças torna-se inevitável, assim, dificultando com seu bem-estar.
-              O projeto MTI trata-se disso, um jeito de melhorar a qualidade de vida dos idosos por meio da tecnologia.
+              Com o envelhecimento da população, a chegada de doenças torna-se
+              inevitável, assim, dificultando com seu bem-estar. O projeto MTI
+              trata-se disso, um jeito de melhorar a qualidade de vida dos
+              idosos por meio da tecnologia.
             </p>
 
             <p>
-              Buscamos várias formas de melhorar a qualidade de vida dos idosos, como, por exemplo, criar uma rotina saudável, armazenando possíveis
-              problemas em um banco de dados, para que sejam enviados para hospitais e formalizar um jeito em ques os resposáveis pelos
-              idosos consigam ter um controle maior sobre os possíveis problemas.
+              Buscamos várias formas de melhorar a qualidade de vida dos idosos,
+              como, por exemplo, criar uma rotina saudável, armazenando
+              possíveis problemas em um banco de dados, para que sejam enviados
+              para hospitais e formalizar um jeito em ques os resposáveis pelos
+              idosos consigam ter um controle maior sobre os possíveis
+              problemas.
             </p>
 
             <Link
-              className="text-button-text bg-button-base text-center rounded-full w-2/5 py-3 mt-6 font-bold hover:brightness-90 transition-[filter] duration-300"
-              to={user ? "/account" : "/register"}>
+              className="mt-6 w-2/5 rounded-full bg-button-base py-3 text-center font-bold text-button-text transition-[filter] duration-300 hover:brightness-90"
+              to={user ? "/account" : "/register"}
+            >
               {user ? "Sua conta" : "Cadastre-se"}
             </Link>
           </div>
@@ -62,7 +71,8 @@ export default function Main() {
             title="Imagem de storyset no Freepik"
             width="500"
             height="500"
-            draggable={false} />
+            draggable={false}
+          />
         </div>
       </main>
 

@@ -1,8 +1,8 @@
 .reactEasyCrop_Image,
 .reactEasyCrop_Video {
-  @apply shadow-black/50 shadow-lg
+  @apply shadow-lg shadow-black/50;
 }
 
 .reactEasyCrop_CropArea {
-  @apply !text-black/40 !border-2 !border-button-base;
+  @apply !border-2 !border-button-base !text-black/40;
 }

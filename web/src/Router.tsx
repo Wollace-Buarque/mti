@@ -1,6 +1,10 @@
 import { useContext } from "react";
 import {
-    createBrowserRouter, createRoutesFromElements, Navigate, Route, useLocation
+  Navigate,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  useLocation,
 } from "react-router-dom";
 
 import { AuthenticateContext } from "./context/AuthenticateContext";
@@ -15,11 +19,15 @@ const Protect = ({ children }: any) => {
   const { user } = useContext(AuthenticateContext);
   const location = useLocation();
 
-  if (!user && (location.pathname !== "/login" && location.pathname !== "/register")) {
+  if (
+    !user &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/register"
+  ) {
     return <Navigate to="/login" />;
   }
 
-  if (user && (location.pathname !== "/account")) {
+  if (user && location.pathname !== "/account") {
     return <Navigate to="/account" />;
   }
 
@@ -28,29 +36,32 @@ const Protect = ({ children }: any) => {
 
 export const router = createBrowserRouter(
   createRoutesFromElements([
-    <Route path="/" element={
-      <Main />
-    } />,
-    <Route path="/about" element={
-      <About />
-    } />,
-    <Route path="/login" element={
-      <Protect>
-        <Signin />
-      </Protect>
-    } />,
-    <Route path="/register" element={
-      <Protect>
-        <Signup />
-      </Protect>
-    } />,
-    <Route path="/account" element={
-      <Protect>
-        <Account />
-      </Protect>
-    } />,
-    <Route path="/patient/:id" element={
-      <Activities />
-    } />,
-  ])
-)
+    <Route path="/" element={<Main />} />,
+    <Route path="/about" element={<About />} />,
+    <Route
+      path="/login"
+      element={
+        <Protect>
+          <Signin />
+        </Protect>
+      }
+    />,
+    <Route
+      path="/register"
+      element={
+        <Protect>
+          <Signup />
+        </Protect>
+      }
+    />,
+    <Route
+      path="/account"
+      element={
+        <Protect>
+          <Account />
+        </Protect>
+      }
+    />,
+    <Route path="/patient/:id" element={<Activities />} />,
+  ]),
+);

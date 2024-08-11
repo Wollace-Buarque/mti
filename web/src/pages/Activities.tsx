@@ -126,11 +126,11 @@ export default function Activities() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header />
 
-      <main className="max-w-5xl mx-auto w-full flex-1 my-8 px-6 sm:px-0">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6 h-fit">
+      <main className="mx-auto my-8 w-full max-w-5xl flex-1 px-6 sm:px-0">
+        <div className="flex h-fit flex-col gap-6 sm:flex-row sm:items-center">
           <img
             onError={(event) => (event.currentTarget.src = userSVG)}
             className="size-40 rounded-full shadow-image"
@@ -139,11 +139,11 @@ export default function Activities() {
           />
 
           <div>
-            <h3 className="text-2xl text-title text-semibold">
+            <h3 className="text-semibold text-2xl text-title">
               {patient?.name}
             </h3>
 
-            <span className="text-sm text-description block mt-1.5">
+            <span className="mt-1.5 block text-sm text-description">
               {patient?.email}
             </span>
 
@@ -157,12 +157,12 @@ export default function Activities() {
         </div>
 
         {!hasActivities && (
-          <p className="text-3xl mt-7">Nenhuma atividade encontrada.</p>
+          <p className="mt-7 text-3xl">Nenhuma atividade encontrada.</p>
         )}
 
         {(isMedic || isAdmin) && hasActivities && (
           <div className="mt-8">
-            <h2 className="flex items-center gap-2 text-title text-3xl">
+            <h2 className="flex items-center gap-2 text-3xl text-title">
               Atividades
             </h2>
 

@@ -8,7 +8,7 @@ interface ReportSummaryProps {
 export function ReportSummary({ updatedAt, reportUrl }: ReportSummaryProps) {
   return (
     <>
-      <h2 className="text-title text-3xl">Relatório médico</h2>
+      <h2 className="text-3xl text-title">Relatório médico</h2>
 
       <p className="text-sm text-[#AAA]">
         Última vez atualizado em{" "}
@@ -19,7 +19,7 @@ export function ReportSummary({ updatedAt, reportUrl }: ReportSummaryProps) {
 
       <ImageModal
         src={reportUrl}
-        className="size-full object-cover shadow-elevation rounded mt-4"
+        className="mt-4 size-full rounded object-cover shadow-elevation"
         draggable={false}
       />
     </>

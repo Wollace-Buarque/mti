@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { AuthenticateContext, User } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
 import { showToast } from "../../utilities/toast";
-import { Button }from "../Button";
+import { Button } from "../Button";
 import { ImageModal } from "../ImageModal";
 
 interface ReportProps {
@@ -81,15 +81,15 @@ export function Report({ user }: ReportProps) {
     <div className="mt-6">
       <input {...getInputProps()} />
 
-      <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-3">
-        <h2 className="flex items-center gap-2 text-title text-3xl group">
+      <div className="flex flex-col items-center justify-between gap-3 sm:flex-row sm:items-end">
+        <h2 className="group flex items-center gap-2 text-3xl text-title">
           {user.report ? "Seu" : "Adicionar"} laudo médico
           <em {...getRootProps()}>
             <span className="sr-only">Adicionar imagem de relatório</span>
 
             <UploadSimple
               color="#EBA417"
-              className="cursor-pointer group-hover:scale-110 transition-transform"
+              className="cursor-pointer transition-transform group-hover:scale-110"
             />
           </em>
         </h2>
@@ -97,7 +97,7 @@ export function Report({ user }: ReportProps) {
         <Button
           onClick={uploadReport}
           isLoading={isUploading}
-          className={`${file ? "block" : "hidden"} sm:w-28 flex items-center justify-center`}
+          className={`${file ? "block" : "hidden"} flex items-center justify-center sm:w-28`}
         >
           {user.report ? "Atualizar" : "Enviar"}
         </Button>
@@ -105,7 +105,7 @@ export function Report({ user }: ReportProps) {
 
       <ImageModal
         src={file ? URL.createObjectURL(file) : user.report?.reportUrl}
-        className="shadow-elevation rounded mt-4"
+        className="mt-4 rounded shadow-elevation"
         draggable={false}
       />
     </div>

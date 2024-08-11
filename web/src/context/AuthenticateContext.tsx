@@ -50,7 +50,7 @@ export const AuthenticateProvider = ({ children }: any) => {
       return;
     }
 
-    server.get(`/token/${token}`).then(response => {
+    server.get(`/token/${token}`).then((response) => {
       if (response.status !== 201) {
         localStorage.removeItem("token");
         return;
@@ -65,7 +65,7 @@ export const AuthenticateProvider = ({ children }: any) => {
         report: response.data.report,
         avatarUrl: response.data.avatarUrl,
         createdAt: new Date(response.data.createdAt),
-        activities: response.data.activities
+        activities: response.data.activities,
       });
     });
 

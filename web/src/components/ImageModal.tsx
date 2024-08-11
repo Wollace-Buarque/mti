@@ -1,8 +1,6 @@
-import { ComponentProps } from "react";
-
 import { X } from "@phosphor-icons/react";
-
 import * as Dialog from "@radix-ui/react-dialog";
+import { ComponentProps } from "react";
 
 interface ImageModalProps extends ComponentProps<"img"> {}
 
@@ -14,17 +12,17 @@ export function ImageModal({ className, ...rest }: ImageModalProps) {
       </Dialog.Trigger>
 
       <Dialog.Portal>
-        <Dialog.Overlay className="bg-black/60 inset-0 fixed">
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] sm:w-[80vw]">
+        <Dialog.Overlay className="fixed inset-0 bg-black/60">
+          <Dialog.Content className="fixed left-1/2 top-1/2 w-[95vw] -translate-x-1/2 -translate-y-1/2 sm:w-[80vw]">
             <img
               {...rest}
-              className="size-full object-cover rounded shadow-image"
+              className="size-full rounded object-cover shadow-image"
               draggable={false}
             />
 
             <Dialog.Close title="Fechar imagem">
               <X
-                className="absolute top-2 right-2 hover:animate-spin-one-time"
+                className="absolute right-2 top-2 hover:animate-spin-one-time"
                 color="#EBA417"
                 size={30}
               />

@@ -10,19 +10,15 @@ interface ActivityProps {
 }
 
 export default function Activity(props: ActivityProps) {
-
   return (
-    <div className={`my-7 first:mt-4 ${props.showActivities ? "opacity-100 visible max-h-96" : "opacity-0 invisible max-h-0"} transition-all duration-500`}>
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-line">
-
+    <div
+      className={`my-7 first:mt-4 ${props.showActivities ? "visible max-h-96 opacity-100" : "invisible max-h-0 opacity-0"} transition-all duration-500`}
+    >
+      <div className="flex flex-col justify-between border-b border-line sm:flex-row sm:items-end">
         <div className="flex items-center gap-1">
-          <h3 className="text-2xl">
-            {props.activity.name}
-          </h3>
+          <h3 className="text-2xl">{props.activity.name}</h3>
 
-          <span className="text-button-base text-2xl">
-            –
-          </span>
+          <span className="text-2xl text-button-base">–</span>
 
           <span className="text-sm text-[#AAA]">
             {secondsFormatter(props.activity.duration)} de duração
@@ -33,15 +29,17 @@ export default function Activity(props: ActivityProps) {
           <MedicCard medic={props.activity.author} />
 
           <span className="text-sm text-[#AAA]">
-            Indicada por <HoverCard.Trigger className="underline cursor-pointer">{props.activity.author.name}</HoverCard.Trigger>
+            Indicada por{" "}
+            <HoverCard.Trigger className="cursor-pointer underline">
+              {props.activity.author.name}
+            </HoverCard.Trigger>
           </span>
         </HoverCard.Root>
-
       </div>
 
-      <p className="mt-3 ml-1 pr-1 text-description max-h-72 overflow-y-auto break-words">
+      <p className="ml-1 mt-3 max-h-72 overflow-y-auto break-words pr-1 text-description">
         {props.activity.description}
       </p>
     </div>
-  )
+  );
 }

@@ -7,7 +7,7 @@ import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
 import { clockFormatter } from "../../utilities/clockFormatter";
 import { showToast } from "../../utilities/toast";
-import { Button }from "../Button";
+import { Button } from "../Button";
 import FormGroup from "../FormGroup";
 
 interface CreateActivityModalProps {
@@ -122,16 +122,13 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-black/60 inset-0 fixed">
-        <Dialog.Content
-          className="bg-[#181818] fixed py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 
-    -translate-y-1/2 rounded-lg w-[95%] sm:max-w-xl max-h-[750px] shadow-lg shadow-black/25"
-        >
-          <Dialog.Title className="text-3xl text-center font-inter font-black mb-6">
+      <Dialog.Overlay className="fixed inset-0 bg-black/60">
+        <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[750px] w-[95%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#181818] px-10 py-8 text-white shadow-lg shadow-black/25 sm:max-w-xl">
+          <Dialog.Title className="mb-6 text-center font-inter text-3xl font-black">
             Adicionar atividade
           </Dialog.Title>
 
-          <Dialog.Description className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-5 sm:mb-0">
+          <Dialog.Description className="mb-5 flex flex-col items-center justify-center gap-4 sm:mb-0 sm:flex-row">
             <img
               onError={(event) => (event.currentTarget.src = userSVG)}
               className="size-44 rounded-full shadow-image sm:mb-5"
@@ -140,7 +137,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
               draggable={false}
             />
 
-            <div className="flex flex-col text-description text-center sm:text-start">
+            <div className="flex flex-col text-center text-description sm:text-start">
               <span className="text-xl">{patient.name}</span>
               <span>
                 {activities} atividade{activities !== 1 && "s"}
@@ -155,11 +152,11 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
               placeholder="Nome do exercício"
             />
 
-            <div className="flex flex-col uppercase text-sm font-semibold">
+            <div className="flex flex-col text-sm font-semibold uppercase">
               <label htmlFor="duration">Duração</label>
 
               <input
-                className="bg-[#252222] p-2 rounded-sm text-text font-normal placeholder-text placeholder:text-sm focus:outline-1 focus:outline-button-base focus:outline"
+                className="rounded-sm bg-[#252222] p-2 font-normal text-text placeholder-text placeholder:text-sm focus:outline focus:outline-1 focus:outline-button-base"
                 onBeforeInput={handleBeforeInput}
                 type="text"
                 name="duration"
@@ -179,7 +176,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
             <div className="flex gap-2">
               <Button title="Adicionar" />
 
-              <Dialog.Close className="text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold hover:brightness-90 transition-[filter] duration-300">
+              <Dialog.Close className="mt-4 w-full rounded bg-button-base py-3 text-center font-semibold text-button-text transition-[filter] duration-300 hover:brightness-90">
                 Cancelar
               </Dialog.Close>
             </div>

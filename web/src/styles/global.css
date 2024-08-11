@@ -37,6 +37,6 @@ input::-ms-clear {
 
 /* Cor de fundo ao selecionar texto */
 ::selection {
-  background: #72551E;
+  background: #72551e;
   /* #F9A82670 */
 }

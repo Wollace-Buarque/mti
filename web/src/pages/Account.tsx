@@ -70,17 +70,17 @@ export default function Account() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header account />
 
-      <main className="max-w-5xl mx-auto w-full flex-1 my-8 px-6 sm:px-0">
+      <main className="mx-auto my-8 w-full max-w-5xl flex-1 px-6 sm:px-0">
         <Profile />
 
         {user.type === "medic" && patients.length > 0 && (
           <div className="mt-8">
             <h2
               onClick={() => setShowPatients(!showPatients)}
-              className="flex items-center gap-2 text-title text-3xl cursor-pointer"
+              className="flex cursor-pointer items-center gap-2 text-3xl text-title"
             >
               Pacientes
               {showPatients ? (
@@ -97,7 +97,7 @@ export default function Account() {
 
             <Searcher
               onChangeHandler={patientSearcher}
-              className={`my-2 ${showPatients ? "opacity-100 visible" : "opacity-0 invisible"} transition-all duration-500`}
+              className={`my-2 ${showPatients ? "visible opacity-100" : "invisible opacity-0"} transition-all duration-500`}
             />
 
             <div
@@ -126,7 +126,7 @@ export default function Account() {
           <div className="mt-8">
             <h2
               onClick={() => setShowActivities(!showActivities)}
-              className="flex items-center gap-2 text-title text-3xl cursor-pointer"
+              className="flex cursor-pointer items-center gap-2 text-3xl text-title"
             >
               Atividades para você realizar
               {showActivities ? (
@@ -143,11 +143,11 @@ export default function Account() {
 
             <Searcher
               onChangeHandler={activitySearcher}
-              className={`my-2 ${showActivities ? "opacity-100 visible max-h-10" : "opacity-0 invisible max-h-0"} transition-all duration-500`}
+              className={`my-2 ${showActivities ? "visible max-h-10 opacity-100" : "invisible max-h-0 opacity-0"} transition-all duration-500`}
             />
 
             <div
-              className={`overflow-y-hidden ${showActivities ? "hover:overflow-y-auto max-h-[585px]" : "max-h-0"}`}
+              className={`overflow-y-hidden ${showActivities ? "max-h-[585px] hover:overflow-y-auto" : "max-h-0"}`}
             >
               {filteredActivities.map((activity, index) => (
                 <Activity
@@ -166,7 +166,7 @@ export default function Account() {
           <div className="mt-8">
             <h2
               onClick={() => setShowPatients(!showPatients)}
-              className="flex items-center justify-center sm:justify-start gap-2 text-title text-3xl text-center sm:text-left cursor-pointer"
+              className="flex cursor-pointer items-center justify-center gap-2 text-center text-3xl text-title sm:justify-start sm:text-left"
             >
               Usuários para gerênciar
               {showPatients ? (
@@ -183,11 +183,11 @@ export default function Account() {
 
             <Searcher
               onChangeHandler={patientSearcher}
-              className={`my-2 ${showPatients ? "opacity-100 visible max-h-10" : "opacity-0 invisible max-h-0"} transition-all duration-500`}
+              className={`my-2 ${showPatients ? "visible max-h-10 opacity-100" : "invisible max-h-0 opacity-0"} transition-all duration-500`}
             />
 
             <div
-              className={`overflow-y-hidden ${showPatients ? "hover:overflow-y-auto max-h-[585px]" : "max-h-0"}`}
+              className={`overflow-y-hidden ${showPatients ? "max-h-[585px] hover:overflow-y-auto" : "max-h-0"}`}
             >
               <Dialog.Root open={showModal} onOpenChange={setShowModal}>
                 <DefineMedicModal
