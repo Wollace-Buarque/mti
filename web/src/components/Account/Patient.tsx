@@ -23,11 +23,12 @@ export function Patient({ patient, showPatients }: PatientProps) {
   const { setPatient } = useContext(PatientContext);
 
   const activities = patient.activities?.length ?? 0;
-  const isPatient = patient.type === "patient";
-  const hasReport = !!patient.report && isPatient;
+  const hasReport = !!patient?.report;
   const isReportTooOld =
     hasReport &&
     new Date(patient.report!.updatedAt) < new Date(Date.now() - SIX_MONTHS);
+
+  const shouldShowReportMessage = !hasReport && !isReportTooOld && patient.type !== "medic";
 
   function handleClickSettings(event: MouseEvent) {
     event.stopPropagation();
@@ -71,7 +72,7 @@ export function Patient({ patient, showPatients }: PatientProps) {
                     </span>
                 )}
 
-              {!hasReport && !isReportTooOld && (
+              {shouldShowReportMessage &&  (
                 <span className="text-sm text-red-500">
                   Laudo médico não enviado!
                 </span>
