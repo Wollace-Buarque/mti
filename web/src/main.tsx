@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <AuthenticateProvider>
       <PatientProvider>
-        <Toaster position="top-center" richColors />
+        <Toaster position="top-center" richColors theme="system" />
 
         <RouterProvider router={router} />
       </PatientProvider>
