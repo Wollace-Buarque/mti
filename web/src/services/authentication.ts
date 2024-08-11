@@ -1,8 +1,8 @@
-import { server } from "./server";
+import { api } from "./api";
 
 export async function login(email: string, password: string) {
   try {
-    const { data } = await server.post(`/login`, {
+    const { data } = await api.post(`/login`, {
       email,
       password,
     });
@@ -15,7 +15,7 @@ export async function login(email: string, password: string) {
 
 export async function register(name: string, email: string, password: string) {
   try {
-    const { data } = await server.post(`/register`, {
+    const { data } = await api.post(`/register`, {
       name,
       email,
       password,

@@ -8,12 +8,12 @@ import { ActivityItem } from "../components/activities/activity-item";
 import { ReportSummary } from "../components/report-summary";
 import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
 import { Patient } from "../context/PatientContext";
-import { server } from "../services/server";
+import { api } from "../services/api";
 import { showToast } from "../utilities/toast";
 import Loading from "./Loading";
 
 async function fetchPatient(id: string | undefined) {
-  const { data } = await server.get(`/id/${id}`);
+  const { data } = await api.get(`/id/${id}`);
 
   if (!data.found) {
     return null;
@@ -93,7 +93,7 @@ export default function Activities() {
     }
 
     try {
-      const { data } = await server.delete(`/activity/${activityId}`);
+      const { data } = await api.delete(`/activity/${activityId}`);
 
       if (data !== "Activity deleted") {
         showToast({

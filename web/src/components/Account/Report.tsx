@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
 import { AuthenticateContext, User } from "../../context/AuthenticateContext";
-import { server } from "../../services/server";
+import { api } from "../../services/api";
 import { showToast } from "../../utilities/toast";
 import { Button } from "../Button";
 import { ImageModal } from "../ImageModal";
@@ -58,7 +58,7 @@ export function Report({ user }: ReportProps) {
 
     setIsUploading(true);
 
-    toast.promise(server.post("/report", uploadData), {
+    toast.promise(api.post("/report", uploadData), {
       loading: "Seu relatório está sendo encaminhado... 🚚",
       success: (response) => {
         setUser({

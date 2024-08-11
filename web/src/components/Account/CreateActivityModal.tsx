@@ -4,7 +4,7 @@ import { FormEvent, useContext } from "react";
 import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
-import { server } from "../../services/server";
+import { api } from "../../services/api";
 import { clockFormatter } from "../../utilities/clockFormatter";
 import { showToast } from "../../utilities/toast";
 import { Button } from "../Button";
@@ -75,7 +75,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
     }
 
     try {
-      const { data } = await server.post("/activity", {
+      const { data } = await api.post("/activity", {
         name: activity,
         duration,
         description,

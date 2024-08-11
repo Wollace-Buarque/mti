@@ -16,7 +16,7 @@ import {
   Activity as IActivity,
 } from "../context/AuthenticateContext";
 import { Patient as IPatient } from "../context/PatientContext";
-import { server } from "../services/server";
+import { api } from "../services/api";
 import Loading from "./Loading";
 
 export default function Account() {
@@ -40,7 +40,7 @@ export default function Account() {
   useEffect(() => {
     if (!user || (!isAdmin && !isMedic)) return;
 
-    server.get("/users").then((response) => setPatients(response.data));
+    api.get("/users").then((response) => setPatients(response.data));
   }, []);
 
   useEffect(() => {

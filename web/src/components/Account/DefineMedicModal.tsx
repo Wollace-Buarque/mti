@@ -4,7 +4,7 @@ import { FormEvent, useContext } from "react";
 import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
-import { server } from "../../services/server";
+import { api } from "../../services/api";
 import { showToast } from "../../utilities/toast";
 import { Button } from "../Button";
 
@@ -49,7 +49,7 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
     const newType = patient.type === "medic" ? "patient" : "medic";
 
     try {
-      const { data } = await server.post("/type", {
+      const { data } = await api.post("/type", {
         adminEmail: user.email,
         patientEmail: patient.email,
         newType,

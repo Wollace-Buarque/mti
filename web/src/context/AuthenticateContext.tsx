@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 
-import { server } from "../services/server";
+import { api } from "../services/api";
 
 interface AuthenticateContextData {
   loading: boolean;
@@ -50,7 +50,7 @@ export const AuthenticateProvider = ({ children }: any) => {
       return;
     }
 
-    server.get(`/token/${token}`).then((response) => {
+    api.get(`/token/${token}`).then((response) => {
       if (response.status !== 201) {
         localStorage.removeItem("token");
         return;

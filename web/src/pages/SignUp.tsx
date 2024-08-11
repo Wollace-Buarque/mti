@@ -7,7 +7,7 @@ import { Button } from "../components/Button";
 import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
-import { register } from "../services/authentications";
+import { register } from "../services/authentication";
 import { showToast } from "../utilities/toast";
 
 export default function SignUp() {

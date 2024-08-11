@@ -8,9 +8,9 @@ import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
 import { AuthenticateContext } from "../context/AuthenticateContext";
-import { login } from "../services/authentications";
+import { login } from "../services/authentication";
 import { showToast } from "../utilities/toast";
-import { server } from "../services/server";
+import { api } from "../services/api";
 
 export default function SignIn() {
   const { setUser } = useContext(AuthenticateContext);
@@ -67,7 +67,7 @@ export default function SignIn() {
     });
 
     localStorage.setItem("token", response.token);
-    server.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
 
     navigate("/account");
     showToast({ message: "Login realizado com sucesso!" });

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
-import { server } from "../../services/server";
+import { api } from "../../services/api";
 import { showToast } from "../../utilities/toast";
 import { Button } from "../Button";
 import { CropImageModal } from "../CropImage/CropImageModal";
@@ -87,7 +87,7 @@ export function Profile() {
     );
 
     toast.promise(
-      server.post("/avatar", uploadData).then((response) => {
+      api.post("/avatar", uploadData).then((response) => {
         setUser({
           ...user,
           avatarUrl: response.data.avatarUrl,

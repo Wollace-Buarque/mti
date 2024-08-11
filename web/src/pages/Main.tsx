@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header/Header";
 import Medics from "../components/Medics";
 import { AuthenticateContext, User } from "../context/AuthenticateContext";
-import { server } from "../services/server";
+import { api } from "../services/api";
 import Loading from "./Loading";
 
 export type Medic = Pick<User, "name" | "avatarUrl" | "type">;
@@ -18,7 +18,7 @@ export default function Main() {
   document.title = "Início - MTI";
 
   useEffect(() => {
-    server.get("/users").then((response) => {
+    api.get("/users").then((response) => {
       setMedics(
         response.data
           .filter(
