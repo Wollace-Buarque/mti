@@ -99,6 +99,12 @@ export function Profile() {
     (event.target as HTMLImageElement).src = userSVG;
   }
 
+  function handleCancel() {
+    setFile(null);
+    setCroppedImage(undefined);
+    acceptedFiles.pop();
+  }
+
   return (
     <>
       {isOpenCropModal && file && (
@@ -107,6 +113,7 @@ export function Profile() {
           setOpen={setIsOpenCropModal}
           image={URL.createObjectURL(file)}
           onCropComplete={setCroppedImage}
+          handleCancel={handleCancel}
         />
       )}
 
@@ -118,7 +125,7 @@ export function Profile() {
             <img
               {...getRootProps()}
               onError={onAvatarError}
-              className="size-40 max-w-40 max-h-40 rounded-full shadow-image cursor-pointer hover:opacity-75 transition-opacity duration-300"
+              className="size-40 rounded-full shadow-image cursor-pointer hover:opacity-75 transition-opacity duration-300"
               src={
                 croppedImage
                   ? (croppedImage as string)
