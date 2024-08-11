@@ -21,7 +21,7 @@ import {
 const app = express();
 export const prisma = new PrismaClient();
 
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
