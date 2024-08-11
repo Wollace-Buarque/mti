@@ -1,11 +1,15 @@
-import { UploadSimple } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
+
+import { UploadSimple } from "@phosphor-icons/react";
 import { useDropzone } from "react-dropzone";
 
 import { AuthenticateContext, User } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
+
 import showToast from "../../utilities/toast";
+
 import Button from "../Button";
+import { ImageModal } from "../ImageModal";
 
 interface ReportProps {
   user: User;
@@ -17,7 +21,7 @@ export default function Report(props: ReportProps) {
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
-      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"]
+      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"],
     },
     maxFiles: 1,
   });
@@ -56,7 +60,7 @@ export default function Report(props: ReportProps) {
 
     setUser({
       ...props.user,
-      report: data.report
+      report: data.report,
     });
 
     showToast("Laudo médico atualizado.", 500);
@@ -64,34 +68,29 @@ export default function Report(props: ReportProps) {
   }
 
   return (
-    <div className="mt-4">
-
+    <div className="mt-6">
       <input {...getInputProps()} />
 
-      <h2
-        className="flex items-center gap-2 text-title text-3xl">
-        {props.user.report ? "Seu" : "Adicionar"} laudo médico
-
-        <em  {...getRootProps()}>
-          <UploadSimple color="#EBA417" className="cursor-pointer" />
-        </em>
-      </h2>
-
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
-
-        <img
-          className="max-w-4xl max-h-[43.75rem] shadow-elevation rounded"
-          src={file ? URL.createObjectURL(file) : props.user.report?.reportUrl}
-          draggable={false}
-        />
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <h2 className="flex items-center gap-2 text-title text-3xl">
+          {props.user.report ? "Seu" : "Adicionar"} laudo médico
+          <em {...getRootProps()}>
+            <UploadSimple color="#EBA417" className="cursor-pointer" />
+          </em>
+        </h2>
 
         <Button
-          className={`${file ? "opacity-100 visible max-h-fit" : "opacity-0 invisible max-h-0"} h-14 sm:w-28 transition-all duration-500 mt-0`}
+          className={`${file ? "block" : "hidden"} h-14 sm:w-28 mt-0`}
           onClick={uploadReport}
-          title="Enviar" />
-
+          title="Enviar"
+        />
       </div>
 
+      <ImageModal
+        src={file ? URL.createObjectURL(file) : props.user.report?.reportUrl}
+        className="shadow-elevation rounded mt-4"
+        draggable={false}
+      />
     </div>
-  )
+  );
 }
