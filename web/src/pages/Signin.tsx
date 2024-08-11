@@ -1,4 +1,4 @@
-import { Eye, EyeClosed } from "phosphor-react";
+import { Eye, EyeClosed } from "@phosphor-icons/react";
 import { FormEvent, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -35,12 +35,12 @@ export default function Signin() {
     const response = await login(email.toString(), password.toString());
 
     if (!response) {
-      showToast("Ocorreu um erro ao tentar entrar!")
+      showToast("Ocorreu um erro ao tentar entrar!");
       return;
     }
 
     if (response.message !== "Logged in.") {
-      showToast("E-mail ou senha inválido!")
+      showToast("E-mail ou senha inválido!");
       return;
     }
 
@@ -53,7 +53,7 @@ export default function Signin() {
       report: response.report,
       avatarUrl: response.avatarUrl,
       createdAt: new Date(response.createdAt),
-      activities: response.activities
+      activities: response.activities,
     });
 
     localStorage.setItem("token", response.token);
@@ -67,38 +67,38 @@ export default function Signin() {
       <Header signin />
 
       <main className="max-w-5xl mx-auto w-full flex flex-col gap-8 sm:gap-0 sm:flex-row items-center justify-between flex-1 py-6 sm:py-0">
-
         <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
 
         <div className="w-11/12 sm:w-2/5 bg-black/40 p-6 rounded-lg">
-          <h1 className="text-4xl text-title mb-6">
-            Entrar
-          </h1>
+          <h1 className="text-4xl text-title mb-6">Entrar</h1>
 
           <form onSubmit={handleSubmit}>
             <FormGroup
               name="email"
               title="E-mail"
               placeholder="Digite seu e-mail"
-              type="email" />
+              type="email"
+            />
 
             <div className="relative mt-3">
               <FormGroup
                 name="password"
                 title="Senha"
                 placeholder="Digite sua senha"
-                type={showPassword ? "text" : "password"} />
+                type={showPassword ? "text" : "password"}
+              />
 
               <button
                 title="Mostrar senha"
                 onClick={() => setShowPassword(!showPassword)}
                 type="button"
-                className="absolute bottom-2 right-2">
-
-                {showPassword
-                  ? <Eye size={20} color="#EBA417" />
-                  : <EyeClosed size={20} color="#EBA417" />}
-
+                className="absolute bottom-2 right-2"
+              >
+                {showPassword ? (
+                  <Eye size={20} color="#EBA417" />
+                ) : (
+                  <EyeClosed size={20} color="#EBA417" />
+                )}
               </button>
             </div>
 
@@ -106,10 +106,15 @@ export default function Signin() {
           </form>
 
           <div className="flex flex-col mt-4 text-sm text-description">
-            <a className="underline" href="#">Esqueceu sua senha?</a>
+            <a className="underline" href="#">
+              Esqueceu sua senha?
+            </a>
 
             <div>
-              Não possui uma conta? <Link to="/register" className="underline">Cadastre-se gratuitamente</Link>
+              Não possui uma conta?{" "}
+              <Link to="/register" className="underline">
+                Cadastre-se gratuitamente
+              </Link>
             </div>
           </div>
         </div>
