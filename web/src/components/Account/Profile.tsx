@@ -25,18 +25,24 @@ export function Profile() {
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
-      "image/*": [".png", /*".gif",*/ ".jpeg", ".jpg"],
+      "image/png": [".png"],
+      "image/jpeg": [".jpeg", ".jpg"]
     },
     maxFiles: 1,
   });
 
   useEffect(() => {
-    setFile(acceptedFiles[0]);
-    setIsOpenCropModal(true);
+    const file = acceptedFiles[0];
+
+    setFile(file);
+
+    if (file != null) {
+      setIsOpenCropModal(true);
+    }
   }, [acceptedFiles]);
 
   function handleExit() {
-    showToast({ message: "Saindo da conta...", type: "info", duration: 500 });
+    showToast({ message: "Você foi desconectado!", type: "info", duration: 1000 });
 
     setUser(null);
     localStorage.removeItem("token");
@@ -80,9 +86,9 @@ export function Profile() {
         });
       }),
       {
-        loading: "Enviando...",
-        success: "Foto de perfil atualizada.",
-        error: "Ocorreu um erro ao atualizar a foto de perfil.",
+        loading: "Sua foto de perfil está sendo encaminhada... 🚚",
+        success: "Sua linda foto de perfil foi atualizada.",
+        error: "Algo deu errado ao enviar sua foto de perfil.",
       },
     );
 
