@@ -28,7 +28,7 @@ export default function Signup() {
     const checkPassword = data.get("check-password");
 
     if (!name || !email || !password || !checkPassword) {
-      showToast("Preencha todos os campos!");
+      showToast({ message: "Preencha todos os campos!", type: "warning" });
       return;
     }
 
@@ -36,12 +36,12 @@ export default function Signup() {
       !name.toString().includes(" ") ||
       name.toString().split(" ").length < 2
     ) {
-      showToast("Preencha o nome completo!");
+      showToast({ message: "Preencha o nome completo!", type: "warning" });
       return;
     }
 
     if (password.toString() !== checkPassword.toString()) {
-      showToast("As senhas precisam ser iguais!");
+      showToast({ message: "As senhas não coincidem!", type: "warning" });
       return;
     }
 
@@ -52,17 +52,17 @@ export default function Signup() {
     );
 
     if (!response) {
-      showToast("Ocorreu um erro ao tentar criar sua conta!");
+      showToast({ message: "Ocorreu um erro ao tentar criar sua conta!", type: "error"});
       return;
     }
 
     if (response.message !== "Account created.") {
-      showToast("A conta já existe!");
+      showToast({ message: "A conta já existe!", type: "error" });
       return false;
     }
 
     navigate("/login");
-    showToast("Conta cadastrada com sucesso!");
+    showToast({ message: "Conta criada com sucesso!" });
   }
 
   return (

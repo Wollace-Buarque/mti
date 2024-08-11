@@ -1,19 +1,16 @@
-import { useContext, useEffect, useState } from "react";
-
 import { X } from "@phosphor-icons/react";
+import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-
-import { AuthenticateContext } from "../../context/AuthenticateContext";
-import { server } from "../../services/server";
-import { blobToImageFile } from "../CropImage/crop-image";
-import { CropImageModal } from "../CropImage/CropImageModal";
-
-import{ showToast } from "../../utilities/toast";
-import Button from "../Button";
+import { toast } from "sonner";
 
 import userSVG from "../../assets/user.svg";
-import { toast } from "sonner";
+import { AuthenticateContext } from "../../context/AuthenticateContext";
+import { server } from "../../services/server";
+import { showToast } from "../../utilities/toast";
+import Button from "../Button";
+import { CropImageModal } from "../CropImage/CropImageModal";
+import { blobToImageFile } from "../CropImage/crop-image";
 
 export function Profile() {
   const { user, setUser } = useContext(AuthenticateContext);
@@ -39,7 +36,7 @@ export function Profile() {
   }, [acceptedFiles]);
 
   function handleExit() {
-    showToast("Desconectado.", 500);
+    showToast({ message: "Saindo da conta...", type: "info", duration: 500 });
 
     setUser(null);
     localStorage.removeItem("token");
@@ -49,12 +46,19 @@ export function Profile() {
 
   async function uploadAvatar() {
     if (!user) {
-      showToast("Você precisa estar conectado para fazer isso.", 500);
+      showToast({
+        message: "Você precisa estar conectado para fazer isso.",
+        type: "warning",
+      });
       return;
     }
 
     if (!croppedImage || !file) {
-      showToast("Selecione uma imagem.", 500);
+      showToast({
+        message: "Selecione uma imagem.",
+        type: "warning",
+        duration: 500,
+      });
       return;
     }
 

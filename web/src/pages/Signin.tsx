@@ -9,7 +9,7 @@ import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
 import { AuthenticateContext } from "../context/AuthenticateContext";
 import { login } from "../services/authentications";
-import{ showToast } from "../utilities/toast";
+import { showToast } from "../utilities/toast";
 
 export default function Signin() {
   const { setUser } = useContext(AuthenticateContext);
@@ -28,19 +28,22 @@ export default function Signin() {
     const password = data.get("password");
 
     if (!email || !password) {
-      showToast("Preencha todos os campos!");
+      showToast({ message: "Preencha todos os campos!", type: "warning" });
       return;
     }
 
     const response = await login(email.toString(), password.toString());
 
     if (!response) {
-      showToast("Ocorreu um erro ao tentar entrar!");
+      showToast({
+        message: "Ocorreu um erro ao tentar entrar!",
+        type: "error",
+      });
       return;
     }
 
     if (response.message !== "Logged in.") {
-      showToast("E-mail ou senha inválido!");
+      showToast({ message: "E-mail ou senha inválido!", type: "error" });
       return;
     }
 
@@ -59,7 +62,7 @@ export default function Signin() {
     localStorage.setItem("token", response.token);
 
     navigate("/account");
-    showToast("Login realizado com sucesso!", 500);
+    showToast({ message: "Login realizado com sucesso!" });
   }
 
   return (

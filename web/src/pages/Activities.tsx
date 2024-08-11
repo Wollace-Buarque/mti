@@ -9,7 +9,7 @@ import { ReportSummary } from "../components/report-summary";
 import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
 import { Patient } from "../context/PatientContext";
 import { server } from "../services/server";
-import{ showToast } from "../utilities/toast";
+import { showToast } from "../utilities/toast";
 import Loading from "./Loading";
 
 async function fetchPatient(id: string | undefined) {
@@ -75,17 +75,20 @@ export default function Activities() {
 
   async function removeActivity(activityId: number) {
     if (!user) {
-      showToast("Você precisa estar logado!");
+      showToast({ message: "Você precisa estar logado!", type: "warning" });
       return;
     }
 
     if (!isAdmin && !isMedic) {
-      showToast("Você não pode realizar esta ação!");
+      showToast({
+        message: "Apenas administradores ou médicos podem alterar algo.",
+        type: "error",
+      });
       return;
     }
 
     if (!patient) {
-      showToast("Paciente não encontrado!");
+      showToast({ message: "Paciente não encontrado!", type: "error" });
       return;
     }
 
@@ -93,11 +96,16 @@ export default function Activities() {
       const { data } = await server.delete(`/activity/${activityId}`);
 
       if (data !== "Activity deleted") {
-        showToast("Atividade não encontrada ou já deletada!");
+        showToast({
+          message: "Atividade não encontrada ou já deletada!",
+          type: "error",
+        });
         return;
       }
 
-      showToast("Atividade deletada com sucesso!");
+      showToast({
+        message: "Atividade deletada com sucesso!",
+      });
 
       const newActivities = patient.activities.filter(
         (activity) => activity.id !== activityId,
@@ -110,7 +118,10 @@ export default function Activities() {
 
       setFilteredActivities(newActivities);
     } catch (error) {
-      showToast("Ocorreu um erro ao tentar deletar atividade!");
+      showToast({
+        message: "Ocorreu um erro ao tentar deletar a atividade!",
+        type: "error",
+      });
     }
   }
 

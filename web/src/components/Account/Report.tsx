@@ -1,13 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-
 import { UploadSimple } from "@phosphor-icons/react";
+import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { AuthenticateContext, User } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
-
-import{ showToast } from "../../utilities/toast";
-
+import { showToast } from "../../utilities/toast";
 import Button from "../Button";
 import { ImageModal } from "../ImageModal";
 
@@ -36,12 +33,19 @@ export default function Report(props: ReportProps) {
 
   async function uploadReport() {
     if (!props.user) {
-      showToast("Você precisa estar conectado para fazer isso.", 500);
+      showToast({
+        message:
+          "Não foi possível validar sua conta, tente fazer login novamente.",
+        type: "error",
+      });
       return;
     }
 
     if (!file) {
-      showToast("Selecione uma imagem.", 500);
+      showToast({
+        message: "Você precisa adicionar um arquivo",
+        type: "warning",
+      });
       return;
     }
 
@@ -54,7 +58,10 @@ export default function Report(props: ReportProps) {
 
     if (data.message !== "Report changed.") {
       setFile(null);
-      showToast("Ocorreu um erro ao enviar o laudo médico.", 500);
+      showToast({
+        message: "Ocorreu um erro ao enviar o laudo médico.",
+        type: "warning",
+      });
       return;
     }
 
@@ -63,7 +70,7 @@ export default function Report(props: ReportProps) {
       report: data.report,
     });
 
-    showToast("Laudo médico atualizado.", 500);
+    showToast({ message: "Laudo médico atualizado." });
     setFile(null);
   }
 

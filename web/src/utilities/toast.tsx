@@ -1,10 +1,16 @@
 import { toast } from "sonner";
 
-export function showToast(
-  message: string,
-  duration: number = 1000,
-  type: "success" | "error" | "info" | "warning" = "success",
-) {
+interface ToastProps {
+  message: string;
+  duration?: number;
+  type?: "success" | "error" | "info" | "warning";
+}
+
+export function showToast({
+  message,
+  duration = 3000,
+  type = "success",
+}: ToastProps) {
   switch (type) {
     case "success":
       toast.success(message, { duration });

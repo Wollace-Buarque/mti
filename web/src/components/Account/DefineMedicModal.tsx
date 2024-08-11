@@ -1,15 +1,12 @@
+import * as Dialog from "@radix-ui/react-dialog";
 import { FormEvent, useContext } from "react";
 
-import * as Dialog from "@radix-ui/react-dialog";
-
+import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
-
-import{ showToast } from "../../utilities/toast";
+import { showToast } from "../../utilities/toast";
 import Button from "../Button";
-
-import userSVG from "../../assets/user.svg";
 
 interface DefineMedicModalProps {
   patients: Patient[];
@@ -25,19 +22,26 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
     event.preventDefault();
 
     if (!patient) {
-      showToast("Paciente não encontrado!", 500);
+      showToast({ message: "Paciente não encontrado!", type: "error" });
       props.setOpen(false);
       return;
     }
 
     if (!user) {
-      showToast("Erro ao validar sua conta, por favor, tente novamente!", 500);
+      showToast({
+        message:
+          "Erro ao validar sua conta, por favor, tente entrar novamente!",
+        type: "error",
+      });
       props.setOpen(false);
       return;
     }
 
     if (user.type !== "admin") {
-      showToast("Apenas administradores podem adicionar novos médicos!", 500);
+      showToast({
+        message: "Apenas administradores podem definir médicos ou pacientes!",
+        type: "error",
+      });
       props.setOpen(false);
       return;
     }
@@ -52,19 +56,19 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
       });
 
       if (data.message === "User is not an admin.") {
-        showToast(
-          "Apenas administradores podem adicionar ou remover novos médicos!",
-          500,
-        );
+        showToast({
+          message: "Apenas administradores podem definir médicos ou pacientes!",
+          type: "error",
+        });
         props.setOpen(false);
         return;
       }
 
       if (data.message !== "Type changed.") {
-        showToast(
-          "Erro ao definir médico ou remover, por favor, tente novamente!",
-          500,
-        );
+        showToast({
+          message: "Algo deu errado ao tentar alterar o tipo de usuário!",
+          type: "error",
+        });
         props.setOpen(false);
         return;
       }
@@ -79,12 +83,12 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
         patient.type === "medic"
           ? "Usuário definido como paciente!"
           : "Usuário definido como médico!";
-      showToast(message, 500);
+      showToast({ message });
     } catch (error) {
-      showToast(
-        "Erro ao definir ou remover médico, atualize a página e tente novamente!",
-        500,
-      );
+      showToast({
+        message: "Algo deu errado ao tentar alterar o tipo de usuário!",
+        type: "error",
+      });
     }
 
     props.setOpen(false);

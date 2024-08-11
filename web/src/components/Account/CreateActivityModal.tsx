@@ -1,13 +1,12 @@
-import { FormEvent, useContext } from "react";
-
 import * as Dialog from "@radix-ui/react-dialog";
+import { FormEvent, useContext } from "react";
 
 import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
 import { clockFormatter } from "../../utilities/clockFormatter";
-import{ showToast } from "../../utilities/toast";
+import { showToast } from "../../utilities/toast";
 import Button from "../Button";
 import FormGroup from "../FormGroup";
 
@@ -31,12 +30,15 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
     event.preventDefault();
 
     if (!patient) {
-      showToast("Paciente não encontrado!", 500);
+      showToast({ message: "Paciente não encontrado!", type: "error" });
       return;
     }
 
     if (!patient.report) {
-      showToast(`${patient.name.split(" ")[0]} não enviou o laudo médico!`, 500);
+      showToast({
+        message: `${patient.name.split(" ")[0]} não enviou o laudo médico!`,
+        type: "error",
+      });
       return;
     }
 
@@ -47,23 +49,29 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
     const description = data.get("description");
 
     if (!activity || !duration || !description) {
-      showToast("Preencha todos os campos", 500);
+      showToast({ message: "Preencha todos os campos!", type: "warning" });
       return;
     }
 
     if (duration < 1) {
-      showToast("Duração inválida", 500);
+      showToast({ message: "Duração inválida!", type: "warning" });
       return;
     }
 
     if (!user) {
-      showToast("Erro ao validar sua conta, por favor, tente novamente!", 500);
+      showToast({
+        message: "Erro ao validar sua conta, tente reentrar!",
+        type: "error",
+      });
       props.setOpen(false);
       return;
     }
 
     if (user.type !== "medic") {
-      showToast("Apenas médicos podem adicionar atividades a pacientes!", 500);
+      showToast({
+        message: "Apenas médicos podem adicionar atividades a pacientes",
+        type: "error",
+      });
       props.setOpen(false);
       return;
     }
@@ -74,7 +82,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
         duration,
         description,
         authorEmail: user.email,
-        patientEmail: patient.email
+        patientEmail: patient.email,
       });
 
       const newPatient = patient;
@@ -89,11 +97,18 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
         updatedAt: new Date(),
       });
 
-      props.setPatients(props.patients.map(p => p.email === patient.email ? newPatient : p));
+      props.setPatients(
+        props.patients.map((p) => (p.email === patient.email ? newPatient : p)),
+      );
 
-      showToast("Atividade adicionada com sucesso!", 500);
+      showToast({
+        message: "Atividade adicionada com sucesso!",
+      });
     } catch (error) {
-      showToast("Erro ao adicionar atividade, atualize a página e tente novamente!", 500);
+      showToast({
+        message: "Algo deu errado ao tentar adicionar a atividade!",
+        type: "error",
+      });
     }
 
     props.setOpen(false);
@@ -110,25 +125,25 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed">
-
-        <Dialog.Content className="bg-[#181818] fixed py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 
-    -translate-y-1/2 rounded-lg w-[95%] sm:w-[550px] max-h-[750px] shadow-lg shadow-black/25">
-
+        <Dialog.Content
+          className="bg-[#181818] fixed py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 
+    -translate-y-1/2 rounded-lg w-[95%] sm:w-[550px] max-h-[750px] shadow-lg shadow-black/25"
+        >
           <Dialog.Title className="text-3xl text-center font-inter font-black mb-6">
             Adicionar atividade
           </Dialog.Title>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-5 sm:mb-0">
             <img
-              onError={event => event.currentTarget.src = userSVG}
+              onError={(event) => (event.currentTarget.src = userSVG)}
               className="max-w-[180px] max-h-[180px] min-w-[180px] min-h-[180px] rounded-full shadow-image sm:mb-5"
               src={patient.avatarUrl ?? userSVG}
-              width={180} draggable={false} />
+              width={180}
+              draggable={false}
+            />
 
             <div className="flex flex-col text-description text-center sm:text-start">
-              <span className="text-xl">
-                {patient.name}
-              </span>
+              <span className="text-xl">{patient.name}</span>
               <span>
                 {activities} atividade{activities !== 1 && "s"}
               </span>
@@ -136,28 +151,32 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-
             <FormGroup
               name="activity"
               title="Atividade"
-              placeholder="Nome do exercício" />
+              placeholder="Nome do exercício"
+            />
 
             <div className="flex flex-col uppercase text-sm font-semibold">
-              <label htmlFor="duration">
-                Duração
-              </label>
+              <label htmlFor="duration">Duração</label>
 
-              <input className="bg-[#252222] p-2 rounded-sm text-text font-normal placeholder-text placeholder:text-sm focus:outline-1 focus:outline-button-base focus:outline"
+              <input
+                className="bg-[#252222] p-2 rounded-sm text-text font-normal placeholder-text placeholder:text-sm focus:outline-1 focus:outline-button-base focus:outline"
                 onBeforeInput={handleBeforeInput}
-                type="text" name="duration" id="duration" title="Exemplo de duração: 00:00:00"
-                placeholder="Duração do exercício" />
+                type="text"
+                name="duration"
+                id="duration"
+                title="Exemplo de duração: 00:00:00"
+                placeholder="Duração do exercício"
+              />
             </div>
 
             <FormGroup
               name="description"
               title="Descrição"
               placeholder="Descrição do exercício"
-              textarea />
+              textarea
+            />
 
             <div className="flex gap-2">
               <Button title="Adicionar" />
@@ -167,10 +186,8 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
               </Dialog.Close>
             </div>
           </form>
-
         </Dialog.Content>
-
       </Dialog.Overlay>
     </Dialog.Portal>
-  )
+  );
 }
