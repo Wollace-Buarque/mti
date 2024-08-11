@@ -20,7 +20,7 @@ export default {
           callback(null, reports);
           break;
         default:
-          console.log("Invalid request type.");
+          console.warn("Invalid request type.");
           break;
       }
     },
