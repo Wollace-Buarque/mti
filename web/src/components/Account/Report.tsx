@@ -1,4 +1,5 @@
 import { UploadSimple } from "@phosphor-icons/react";
+import cx from "classnames";
 import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -97,7 +98,7 @@ export function Report({ user }: ReportProps) {
         <Button
           onClick={uploadReport}
           isLoading={isUploading}
-          className={`${file ? "block" : "hidden"} flex items-center justify-center sm:w-28`}
+          className={cx("flex sm:w-28", { hidden: !file })}
         >
           {user.report ? "Atualizar" : "Enviar"}
         </Button>
