@@ -20,9 +20,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
   const { user } = useContext(AuthenticateContext);
   const { patient } = useContext(PatientContext);
 
-  if (!patient) {
-    return null;
-  }
+  if (!patient) return null;
 
   const activities = patient.activities?.length ?? 0;
 
@@ -127,7 +125,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
       <Dialog.Overlay className="bg-black/60 inset-0 fixed">
         <Dialog.Content
           className="bg-[#181818] fixed py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 
-    -translate-y-1/2 rounded-lg w-[95%] sm:w-[550px] max-h-[750px] shadow-lg shadow-black/25"
+    -translate-y-1/2 rounded-lg w-[95%] sm:max-w-xl max-h-[750px] shadow-lg shadow-black/25"
         >
           <Dialog.Title className="text-3xl text-center font-inter font-black mb-6">
             Adicionar atividade
@@ -136,7 +134,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
           <Dialog.Description className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-5 sm:mb-0">
             <img
               onError={(event) => (event.currentTarget.src = userSVG)}
-              className="max-w-[180px] max-h-[180px] min-w-[180px] min-h-[180px] rounded-full shadow-image sm:mb-5"
+              className="size-44 rounded-full shadow-image sm:mb-5"
               src={patient.avatarUrl ?? userSVG}
               width={180}
               draggable={false}
