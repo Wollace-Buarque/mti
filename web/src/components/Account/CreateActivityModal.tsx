@@ -133,7 +133,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
             Adicionar atividade
           </Dialog.Title>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-5 sm:mb-0">
+          <Dialog.Description className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-5 sm:mb-0">
             <img
               onError={(event) => (event.currentTarget.src = userSVG)}
               className="max-w-[180px] max-h-[180px] min-w-[180px] min-h-[180px] rounded-full shadow-image sm:mb-5"
@@ -148,7 +148,7 @@ export default function CreateActivityModal(props: CreateActivityModalProps) {
                 {activities} atividade{activities !== 1 && "s"}
               </span>
             </div>
-          </div>
+          </Dialog.Description>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <FormGroup
