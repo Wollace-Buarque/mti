@@ -9,7 +9,7 @@ import { ReportSummary } from "../components/report-summary";
 import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
 import { Patient } from "../context/PatientContext";
 import { server } from "../services/server";
-import showToast from "../utilities/toast";
+import{ showToast } from "../utilities/toast";
 import Loading from "./Loading";
 
 async function fetchPatient(id: string | undefined) {

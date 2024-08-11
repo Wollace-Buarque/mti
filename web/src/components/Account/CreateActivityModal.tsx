@@ -7,7 +7,7 @@ import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
 import { clockFormatter } from "../../utilities/clockFormatter";
-import showToast from "../../utilities/toast";
+import{ showToast } from "../../utilities/toast";
 import Button from "../Button";
 import FormGroup from "../FormGroup";
 

@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 
 import { X } from "@phosphor-icons/react";
 import { useDropzone } from "react-dropzone";
-import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { AuthenticateContext } from "../../context/AuthenticateContext";
@@ -10,10 +9,11 @@ import { server } from "../../services/server";
 import { blobToImageFile } from "../CropImage/crop-image";
 import { CropImageModal } from "../CropImage/CropImageModal";
 
-import showToast from "../../utilities/toast";
+import{ showToast } from "../../utilities/toast";
 import Button from "../Button";
 
 import userSVG from "../../assets/user.svg";
+import { toast } from "sonner";
 
 export function Profile() {
   const { user, setUser } = useContext(AuthenticateContext);
@@ -79,10 +79,6 @@ export function Profile() {
         loading: "Enviando...",
         success: "Foto de perfil atualizada.",
         error: "Ocorreu um erro ao atualizar a foto de perfil.",
-      },
-      {
-        icon: null,
-        className: "toast",
       },
     );
 

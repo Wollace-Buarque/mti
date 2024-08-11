@@ -9,7 +9,7 @@ import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
 import { AuthenticateContext } from "../context/AuthenticateContext";
 import { login } from "../services/authentications";
-import showToast from "../utilities/toast";
+import{ showToast } from "../utilities/toast";
 
 export default function Signin() {
   const { setUser } = useContext(AuthenticateContext);

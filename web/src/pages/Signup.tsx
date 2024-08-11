@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";
-import showToast from "../utilities/toast";
+import{ showToast } from "../utilities/toast";
 import { register } from "../services/authentications";
 
 import logoMTI from "../assets/logo.png";

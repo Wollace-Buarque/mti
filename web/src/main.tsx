@@ -1,22 +1,21 @@
-import "./styles/global.css";
-
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Toaster } from "react-hot-toast";
 import { RouterProvider } from "react-router-dom";
+import { Toaster } from "sonner";
 
+import { router } from "./Router";
 import { AuthenticateProvider } from "./context/AuthenticateContext";
 import { PatientProvider } from "./context/PatientContext";
-import { router } from "./Router";
+import "./styles/global.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <AuthenticateProvider>
       <PatientProvider>
-        <Toaster position="top-center" />
+        <Toaster position="top-center" richColors />
 
         <RouterProvider router={router} />
       </PatientProvider>
     </AuthenticateProvider>
-  </React.StrictMode>
-)
+  </React.StrictMode>,
+);
