@@ -1,26 +1,22 @@
 import { CaretDown, CaretUp } from "@phosphor-icons/react";
-import { useContext, useEffect, useState } from "react";
-
 import * as Dialog from "@radix-ui/react-dialog";
+import { useContext, useEffect, useState } from "react";
 
 import Activity from "../components/Account/Activity";
 import CreateActivityModal from "../components/Account/CreateActivityModal";
 import DefineMedicModal from "../components/Account/DefineMedicModal";
-import Report from "../components/Account/Report";
+import { Patient } from "../components/Account/Patient";
+import { Profile } from "../components/Account/Profile";
+import { Report } from "../components/Account/Report";
 import Footer from "../components/Footer";
 import Header from "../components/Header/Header";
 import Searcher from "../components/Searcher";
-import { Patient } from "../components/Account/Patient";
-import { Profile } from "../components/Account/Profile";
-
 import {
-  Activity as IActivity,
   AuthenticateContext,
-  User,
+  Activity as IActivity,
 } from "../context/AuthenticateContext";
 import { Patient as IPatient } from "../context/PatientContext";
 import { server } from "../services/server";
-
 import Loading from "./Loading";
 
 export default function Account() {
