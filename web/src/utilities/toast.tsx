@@ -1,11 +1,7 @@
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
-export default function showToast(message: string, duration: number = 1000) {
-  toast.custom(() => (
-    <div className="toast">
-      {message}
-    </div>
-  ), {
+export function showToast(message: string, duration: number = 1000) {
+  toast(message, {
     duration,
   });
 }
