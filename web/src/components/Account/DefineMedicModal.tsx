@@ -6,7 +6,7 @@ import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
 import { showToast } from "../../utilities/toast";
-import Button from "../Button";
+import { Button }from "../Button";
 
 interface DefineMedicModalProps {
   patients: Patient[];

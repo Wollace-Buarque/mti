@@ -8,7 +8,7 @@ import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
 import { showToast } from "../../utilities/toast";
-import Button from "../Button";
+import { Button }from "../Button";
 import { CropImageModal } from "../CropImage/CropImageModal";
 import { blobToImageFile } from "../CropImage/crop-image";
 

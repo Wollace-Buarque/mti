@@ -7,7 +7,7 @@ import { Patient, PatientContext } from "../../context/PatientContext";
 import { server } from "../../services/server";
 import { clockFormatter } from "../../utilities/clockFormatter";
 import { showToast } from "../../utilities/toast";
-import Button from "../Button";
+import { Button }from "../Button";
 import FormGroup from "../FormGroup";
 
 interface CreateActivityModalProps {

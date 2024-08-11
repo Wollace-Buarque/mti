@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import Cropper, { Area, Point } from "react-easy-crop";
 
-import Button from "../Button";
+import { Button }from "../Button";
 import getCroppedImg from "./crop-image";
 
 interface CropImageProps {

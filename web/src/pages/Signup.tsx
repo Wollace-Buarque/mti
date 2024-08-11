@@ -2,7 +2,7 @@ import { Eye, EyeClosed } from "@phosphor-icons/react";
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import Button from "../components/Button";
+import { Button }from "../components/Button";
 import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
 import Header from "../components/Header/Header";

@@ -8,7 +8,7 @@ interface ButtonProps extends ComponentProps<"button"> {
   isLoading?: boolean;
 }
 
-export default function Button({
+export function Button({
   title,
   isLoading,
   className,
