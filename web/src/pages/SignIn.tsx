@@ -11,7 +11,7 @@ import { AuthenticateContext } from "../context/AuthenticateContext";
 import { login } from "../services/authentications";
 import { showToast } from "../utilities/toast";
 
-export default function Signin() {
+export default function SignIn() {
   const { setUser } = useContext(AuthenticateContext);
   const [showPassword, setShowPassword] = useState(false);
 

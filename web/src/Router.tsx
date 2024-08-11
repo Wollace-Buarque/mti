@@ -12,7 +12,7 @@ import About from "./pages/About";
 import Account from "./pages/Account";
 import Activities from "./pages/Activities";
 import Main from "./pages/Main";
-import Signin from "./pages/Signin";
+import SignIn from "./pages/SignIn";
 import Signup from "./pages/Signup";
 
 const Protect = ({ children }: any) => {
@@ -42,7 +42,7 @@ export const router = createBrowserRouter(
       path="/login"
       element={
         <Protect>
-          <Signin />
+          <SignIn />
         </Protect>
       }
     />,
