@@ -1,4 +1,4 @@
-import { X } from "@phosphor-icons/react";
+import { SignOut } from "@phosphor-icons/react";
 import cx from "classnames";
 import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -170,14 +170,14 @@ export function Profile() {
 
         <button
           onClick={handleExit}
-          className="absolute right-2 top-2 h-fit font-semibold uppercase sm:right-8 sm:top-8"
-          title="Sair da conta"
+          className="absolute right-2 top-2 h-fit font-semibold uppercase sm:right-8 sm:top-8 hover:scale-125 transition-transform"
           type="button"
         >
-          <X
+          <span className="sr-only">Sair da conta</span>
+
+          <SignOut
             size={20}
             color="#EBA417"
-            className="hover:animate-spin-one-time"
           />
         </button>
       </div>
