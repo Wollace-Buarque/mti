@@ -8,7 +8,7 @@ import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
 import { showToast } from "../../utilities/toast";
-import { Button }from "../Button";
+import { Button } from "../Button";
 import { CropImageModal } from "../CropImage/CropImageModal";
 import { blobToImageFile } from "../CropImage/crop-image";
 
@@ -17,6 +17,7 @@ export function Profile() {
   const navigate = useNavigate();
 
   const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [croppedImage, setCroppedImage] = useState<unknown | undefined>(
     undefined,
   );
@@ -26,7 +27,7 @@ export function Profile() {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
       "image/png": [".png"],
-      "image/jpeg": [".jpeg", ".jpg"]
+      "image/jpeg": [".jpeg", ".jpg"],
     },
     maxFiles: 1,
   });
@@ -42,7 +43,11 @@ export function Profile() {
   }, [acceptedFiles]);
 
   function handleExit() {
-    showToast({ message: "Você foi desconectado!", type: "info", duration: 1000 });
+    showToast({
+      message: "Você foi desconectado!",
+      type: "info",
+      duration: 1000,
+    });
 
     setUser(null);
     localStorage.removeItem("token");
@@ -68,6 +73,8 @@ export function Profile() {
       return;
     }
 
+    setIsUploading(true);
+
     const uploadData = new FormData();
     uploadData.append("email", user.email);
     uploadData.append("type", "avatar");
@@ -89,10 +96,13 @@ export function Profile() {
         loading: "Sua foto de perfil está sendo encaminhada... 🚚",
         success: "Sua linda foto de perfil foi atualizada.",
         error: "Algo deu errado ao enviar sua foto de perfil.",
+        finally: () => {
+          acceptedFiles.pop();
+          setIsUploading(false);
+          setFile(null);
+        },
       },
     );
-
-    setFile(null);
   }
 
   function onAvatarError(event: any) {
@@ -148,10 +158,12 @@ export function Profile() {
             </span>
 
             <Button
-              className={`${file ? "block" : "hidden"} w-full`}
               onClick={uploadAvatar}
-              title="Enviar"
-            />
+              isLoading={isUploading}
+              className={`${file ? "block" : "hidden"} w-full mt-2`}
+            >
+              {user?.avatarUrl ? "Atualizar foto" : "Enviar foto"}
+            </Button>
           </div>
         </div>
 
