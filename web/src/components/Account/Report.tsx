@@ -53,7 +53,6 @@ export function Report({ user }: ReportProps) {
     }
 
     const uploadData = new FormData();
-    uploadData.append("email", user.email);
     uploadData.append("type", "report");
     uploadData.append("file", file);
 
