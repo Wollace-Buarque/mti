@@ -350,10 +350,10 @@ async function changeType(
   request: express.Request,
   response: express.Response,
 ) {
-  const { patientEmail, adminEmail, type } = request.body;
+  const { patientEmail, adminEmail, newType } = request.body;
 
-  if (type !== "patient" && type !== "medic") {
-    return response.status(200).json({
+  if (newType !== "patient" && newType !== "medic") {
+    return response.status(400).json({
       message: "Invalid type.",
     });
   }
@@ -364,15 +364,9 @@ async function changeType(
     },
   });
 
-  if (!admin) {
-    return response.status(200).json({
-      message: "Admin not exists.",
-    });
-  }
-
-  if (admin.type !== "admin") {
-    return response.status(200).json({
-      message: "User is not an admin.",
+  if (!admin || admin?.type !== "admin") {
+    return response.status(401).json({
+      message: "Unauthorized",
     });
   }
 
@@ -383,14 +377,14 @@ async function changeType(
   });
 
   if (!patient) {
-    return response.status(200).json({
+    return response.status(404).json({
       message: "Patient not exists.",
     });
   }
 
-  if (patient.type === type) {
+  if (patient.type === newType) {
     return response.status(200).json({
-      message: "Patient already has this type.",
+      message: "Type changed.",
     });
   }
 
@@ -399,11 +393,11 @@ async function changeType(
       email: patientEmail,
     },
     data: {
-      type,
+      type: newType,
     },
   });
 
-  response.status(202).json({
+  response.status(200).json({
     message: "Type changed.",
   });
 }
