@@ -13,7 +13,7 @@ import Account from "./pages/Account";
 import Activities from "./pages/Activities";
 import Main from "./pages/Main";
 import SignIn from "./pages/SignIn";
-import Signup from "./pages/Signup";
+import SignUp from "./pages/SignUp";
 
 const Protect = ({ children }: any) => {
   const { user } = useContext(AuthenticateContext);
@@ -50,7 +50,7 @@ export const router = createBrowserRouter(
       path="/register"
       element={
         <Protect>
-          <Signup />
+          <SignUp />
         </Protect>
       }
     />,

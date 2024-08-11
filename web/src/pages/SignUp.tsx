@@ -10,14 +10,17 @@ import Header from "../components/Header/Header";
 import { register } from "../services/authentications";
 import { showToast } from "../utilities/toast";
 
-export default function Signup() {
-  const [showPassword, setShowPassword] = useState(false);
+export default function SignUp() {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   document.title = "Cadastro - MTI";
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const data = new FormData(event.target as HTMLFormElement);
 
@@ -28,6 +31,7 @@ export default function Signup() {
 
     if (!name || !email || !password || !checkPassword) {
       showToast({ message: "Preencha todos os campos!", type: "warning" });
+      setIsSubmitting(false);
       return;
     }
 
@@ -36,11 +40,13 @@ export default function Signup() {
       name.toString().split(" ").length < 2
     ) {
       showToast({ message: "Preencha o nome completo!", type: "warning" });
+      setIsSubmitting(false);
       return;
     }
 
     if (password.toString() !== checkPassword.toString()) {
       showToast({ message: "As senhas não coincidem!", type: "warning" });
+      setIsSubmitting(false);
       return;
     }
 
@@ -55,16 +61,20 @@ export default function Signup() {
         message: "Ocorreu um erro ao tentar criar sua conta!",
         type: "error",
       });
+      setIsSubmitting(false);
       return;
     }
 
     if (response.message !== "Account created.") {
       showToast({ message: "A conta já existe!", type: "error" });
-      return false;
+      setIsSubmitting(false);
+      return;
     }
 
     navigate("/login");
     showToast({ message: "Conta criada com sucesso!" });
+
+    setIsSubmitting(false);
   }
 
   return (
@@ -135,7 +145,9 @@ export default function Signup() {
               </button>
             </div>
 
-            <Button title="Cadastrar" />
+            <Button className="mt-4" isLoading={isSubmitting}>
+              Cadastrar
+            </Button>
           </form>
 
           <div className="mt-4 flex flex-col text-sm text-description">
