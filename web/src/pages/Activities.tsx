@@ -1,20 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-
 import { Navigate, useParams } from "react-router-dom";
 
-import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
-import { Patient } from "../context/PatientContext";
-
+import userSVG from "../assets/user.svg";
 import Header from "../components/Header/Header";
 import Searcher from "../components/Searcher";
+import { ActivityItem } from "../components/activities/activity-item";
+import { ReportSummary } from "../components/report-summary";
+import { Activity, AuthenticateContext } from "../context/AuthenticateContext";
+import { Patient } from "../context/PatientContext";
+import { server } from "../services/server";
 import showToast from "../utilities/toast";
 import Loading from "./Loading";
-import { ActivityItem } from "../components/activities/activity-item";
-
-import { server } from "../services/server";
-
-import userSVG from "../assets/user.svg";
-import { ReportSummary } from "../components/report-summary";
 
 async function fetchPatient(id: string | undefined) {
   const { data } = await server.get(`/id/${id}`);
