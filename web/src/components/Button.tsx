@@ -1,15 +1,37 @@
 import { ComponentProps } from "react";
+import { twMerge } from "tailwind-merge";
+
+import { Spinner } from "./spinner";
 
 interface ButtonProps extends ComponentProps<"button"> {
-  title: string;
+  title?: string;
+  isLoading?: boolean;
 }
 
-export default function Button({ title, className, ...rest }: ButtonProps) {
+export default function Button({
+  title,
+  isLoading,
+  className,
+  children,
+  ...rest
+}: ButtonProps) {
   return (
     <button
-      className={`text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold enabled:hover:brightness-90 transition-[filter] duration-300 ${className}`}
-      {...rest}>
-      {title}
+      className={twMerge(
+        "text-button-text bg-button-base text-center rounded-lg w-full py-3 font-semibold enabled:hover:brightness-90 transition-[filter] duration-300",
+        className,
+      )}
+      disabled={isLoading}
+      {...rest}
+    >
+      {isLoading ? (
+        <Spinner color="black" size={24} />
+      ) : (
+        <>
+          {title}
+          {children}
+        </>
+      )}
     </button>
   );
 }
