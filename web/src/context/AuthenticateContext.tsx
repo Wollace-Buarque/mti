@@ -51,10 +51,8 @@ export const AuthenticateProvider = ({ children }: any) => {
     }
 
     server.get(`/token/${token}`).then(response => {
-
       if (response.status !== 201) {
         localStorage.removeItem("token");
-        setLoading(false);
         return;
       }
 
@@ -69,10 +67,9 @@ export const AuthenticateProvider = ({ children }: any) => {
         createdAt: new Date(response.data.createdAt),
         activities: response.data.activities
       });
-
-      setLoading(false);
     });
 
+    setLoading(false);
   }, []);
 
   return (
