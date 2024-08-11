@@ -13,7 +13,9 @@ import { showToast } from "../utilities/toast";
 
 export default function SignIn() {
   const { setUser } = useContext(AuthenticateContext);
+
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,6 +23,7 @@ export default function SignIn() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const data = new FormData(event.target as HTMLFormElement);
 
@@ -29,6 +32,7 @@ export default function SignIn() {
 
     if (!email || !password) {
       showToast({ message: "Preencha todos os campos!", type: "warning" });
+      setIsSubmitting(false);
       return;
     }
 
@@ -39,11 +43,13 @@ export default function SignIn() {
         message: "Ocorreu um erro ao tentar entrar!",
         type: "error",
       });
+      setIsSubmitting(false);
       return;
     }
 
     if (response.message !== "Logged in.") {
       showToast({ message: "E-mail ou senha inválido!", type: "error" });
+      setIsSubmitting(false);
       return;
     }
 
@@ -63,13 +69,15 @@ export default function SignIn() {
 
     navigate("/account");
     showToast({ message: "Login realizado com sucesso!" });
+
+    setIsSubmitting(false);
   }
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header signin />
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-between gap-8 py-6 sm:flex-row sm:gap-0 sm:py-0">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center sm:justify-between gap-20 my-10 sm:flex-row sm:gap-0 sm:py-0">
         <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
 
         <div className="w-11/12 rounded-lg bg-black/40 p-6 sm:w-2/5">
@@ -105,7 +113,9 @@ export default function SignIn() {
               </button>
             </div>
 
-            <Button title="Entrar" />
+            <Button className="mt-4" isLoading={isSubmitting}>
+              Entrar
+            </Button>
           </form>
 
           <div className="mt-4 flex flex-col text-sm text-description">
