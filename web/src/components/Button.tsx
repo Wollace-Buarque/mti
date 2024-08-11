@@ -1,15 +1,13 @@
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+import { ComponentProps } from "react";
+
+interface ButtonProps extends ComponentProps<"button"> {
   title: string;
-  type?: "button" | "submit";
 }
 
-export default function Button(props: ButtonProps) {
-  const { title = "submit", type, className, ...rest } = props;
-
+export default function Button({ title, className, ...rest }: ButtonProps) {
   return (
     <button
-      className={`text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold hover:brightness-90 transition-[filter] duration-300 ${className}`}
-      type={type}
+      className={`text-button-text bg-button-base text-center rounded w-full py-3 mt-4 font-semibold enabled:hover:brightness-90 transition-[filter] duration-300 ${className}`}
       {...rest}>
       {title}
     </button>
