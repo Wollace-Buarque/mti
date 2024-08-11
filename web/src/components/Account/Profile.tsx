@@ -1,18 +1,21 @@
-import { X } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
+
+import { X } from "@phosphor-icons/react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import userSVG from "../../assets/user.svg";
 import { AuthenticateContext } from "../../context/AuthenticateContext";
 import { server } from "../../services/server";
-import showToast from "../../utilities/toast";
-import Button from "../Button";
 import { blobToImageFile } from "../CropImage/crop-image";
 import { CropImageModal } from "../CropImage/CropImageModal";
 
-export default function Profile() {
+import showToast from "../../utilities/toast";
+import Button from "../Button";
+
+import userSVG from "../../assets/user.svg";
+
+export function Profile() {
   const { user, setUser } = useContext(AuthenticateContext);
   const navigate = useNavigate();
 
