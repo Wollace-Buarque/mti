@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
 import userSVG from "../assets/user.svg";
-import Header from "../components/Header/Header";
 import Searcher from "../components/Searcher";
 import { ActivityItem } from "../components/activities/activity-item";
 import { ReportSummary } from "../components/report-summary";
@@ -126,69 +125,63 @@ export default function Activities() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
+    <>
+      <div className="flex h-fit flex-col gap-6 sm:flex-row sm:items-center">
+        <img
+          onError={(event) => (event.currentTarget.src = userSVG)}
+          className="size-40 rounded-full shadow-image"
+          src={patient?.avatarUrl ?? userSVG}
+          draggable={false}
+        />
 
-      <main className="mx-auto my-8 w-full max-w-5xl flex-1 px-6 sm:px-0">
-        <div className="flex h-fit flex-col gap-6 sm:flex-row sm:items-center">
-          <img
-            onError={(event) => (event.currentTarget.src = userSVG)}
-            className="size-40 rounded-full shadow-image"
-            src={patient?.avatarUrl ?? userSVG}
-            draggable={false}
-          />
+        <div>
+          <h3 className="text-semibold text-2xl text-title">{patient?.name}</h3>
 
-          <div>
-            <h3 className="text-semibold text-2xl text-title">
-              {patient?.name}
-            </h3>
+          <span className="mt-1.5 block text-sm text-description">
+            {patient?.email}
+          </span>
 
-            <span className="mt-1.5 block text-sm text-description">
-              {patient?.email}
-            </span>
+          <span className="text-sm text-description">
+            Desde{" "}
+            {patient?.createdAt.toLocaleString("pt-BR", {
+              dateStyle: "long",
+            })}
+          </span>
+        </div>
+      </div>
 
-            <span className="text-sm text-description">
-              Desde{" "}
-              {patient?.createdAt.toLocaleString("pt-BR", {
-                dateStyle: "long",
-              })}
-            </span>
+      {!hasActivities && (
+        <p className="mt-7 text-3xl">Nenhuma atividade encontrada.</p>
+      )}
+
+      {(isMedic || isAdmin) && hasActivities && (
+        <div className="mt-8">
+          <h2 className="flex items-center gap-2 text-3xl text-title">
+            Atividades
+          </h2>
+
+          <Searcher className="my-2" onChangeHandler={activitySearcher} />
+
+          <div className="max-h-[650px] overflow-y-hidden hover:overflow-y-auto">
+            {filteredActivities.map((activity) => (
+              <ActivityItem
+                key={activity.id}
+                activity={activity}
+                removeAction={removeActivity}
+              />
+            ))}
           </div>
         </div>
+      )}
 
-        {!hasActivities && (
-          <p className="mt-7 text-3xl">Nenhuma atividade encontrada.</p>
-        )}
-
-        {(isMedic || isAdmin) && hasActivities && (
-          <div className="mt-8">
-            <h2 className="flex items-center gap-2 text-3xl text-title">
-              Atividades
-            </h2>
-
-            <Searcher className="my-2" onChangeHandler={activitySearcher} />
-
-            <div className="max-h-[650px] overflow-y-hidden hover:overflow-y-auto">
-              {filteredActivities.map((activity) => (
-                <ActivityItem
-                  key={activity.id}
-                  activity={activity}
-                  removeAction={removeActivity}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {patient?.report && (
-          <div className="mt-4">
-            <ReportSummary
-              updatedAt={new Date(patient.report.updatedAt)}
-              reportUrl={patient.report.reportUrl}
-            />
-          </div>
-        )}
-      </main>
-    </div>
+      {patient?.report && (
+        <div className="mt-4">
+          <ReportSummary
+            updatedAt={new Date(patient.report.updatedAt)}
+            reportUrl={patient.report.reportUrl}
+          />
+        </div>
+      )}
+    </>
   );
 }

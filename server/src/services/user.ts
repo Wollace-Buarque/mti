@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import fs from "fs";
 import path from "path";
 
@@ -9,18 +9,11 @@ const AVATARS_BASE_URL = "http://localhost:3000/avatars";
 const REPORTS_BASE_URL = "http://localhost:3000/reports";
 
 async function getUsers(request: express.Request, response: express.Response) {
-  const bearer = request.headers.authorization;
-  const token = bearer?.split(" ")[1];
-
-  if (!token) {
-    return response.status(400).json({
-      message: "Invalid credentials.",
-    });
-  }
+  const { sub } = request;
 
   const user = await prisma.user.findUnique({
     where: {
-      token,
+      id: sub,
     },
   });
 
@@ -73,36 +66,6 @@ async function getUsers(request: express.Request, response: express.Response) {
   return response.json(users);
 }
 
-async function getUserByEmail(
-  request: express.Request,
-  response: express.Response,
-) {
-  const { email } = request.params;
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      report: true,
-      avatarUrl: true,
-      createdAt: true,
-    },
-  });
-
-  if (user) {
-    user.avatarUrl = fixUrl(user.avatarUrl, "avatar");
-
-    if (user.report)
-      user.report.reportUrl = fixUrl(user.report.reportUrl, "report");
-  }
-
-  return response.json({ found: !!user, ...user });
-}
-
 async function getUserById(
   request: express.Request,
   response: express.Response,
@@ -122,21 +85,15 @@ async function getUserById(
       avatarUrl: true,
       createdAt: true,
       activities: {
-        select: {
-          id: true,
+        include: {
           author: true,
-          name: true,
-          duration: true,
-          createdAt: true,
-          updatedAt: true,
-          description: true,
         },
       },
     },
   });
 
   if (user) {
-    user.activities.reduce((current: any, activity) => {
+    user.activities.reduce((_: any, activity) => {
       activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar");
     }, []);
 
@@ -153,11 +110,11 @@ async function getUserByToken(
   request: express.Request,
   response: express.Response,
 ) {
-  const { token } = request.params;
+  const { sub } = request;
 
   const user = await prisma.user.findUnique({
     where: {
-      token,
+      id: sub,
     },
     select: {
       id: true,
@@ -169,24 +126,18 @@ async function getUserByToken(
       avatarUrl: true,
       createdAt: true,
       activities: {
-        select: {
-          id: true,
+        include: {
           author: true,
-          name: true,
-          duration: true,
-          createdAt: true,
-          updatedAt: true,
-          description: true,
         },
       },
     },
   });
 
   if (!user) {
-    return response.json({ found: false });
+    return response.status(404).send();
   }
 
-  user.activities.reduce((current: any, activity) => {
+  user.activities?.reduce((_: any, activity) => {
     activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar");
   }, []);
 
@@ -234,7 +185,7 @@ async function login(request: express.Request, response: express.Response) {
     });
   }
 
-  user.activities.reduce((current: any, activity) => {
+  user.activities.reduce((_: any, activity) => {
     activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar");
   }, []);
 
@@ -244,12 +195,12 @@ async function login(request: express.Request, response: express.Response) {
   const passwordIsValid = comparePassword(password, user.password);
 
   if (!passwordIsValid) {
-    return response.status(200).json({
+    return response.status(404).json({
       message: "Account not exists / Invalid password.",
     });
   }
 
-  var token =
+  const token =
     Math.random().toString(16).slice(2) +
     Math.random().toString(16).slice(2) +
     Math.random().toString(16).slice(2);
@@ -283,7 +234,7 @@ async function register(request: express.Request, response: express.Response) {
   const exists = await accountExists(email);
 
   if (exists) {
-    return response.status(200).json({
+    return response.status(400).json({
       message: "Account already exists.",
     });
   }
@@ -299,31 +250,29 @@ async function changeAvatar(
   request: express.Request,
   response: express.Response,
 ) {
-  const { email } = request.body;
+  const { sub } = request;
 
-  const oldUser = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
-      email,
+      id: sub,
     },
     select: {
       avatarUrl: true,
     },
   });
 
-  if (!oldUser) {
-    return response.status(200).json({
+  if (!user) {
+    return response.status(404).json({
       message: "Account not exists.",
     });
   }
 
-  const oldAvatar = oldUser.avatarUrl;
-
-  let user;
+  const oldAvatar = user.avatarUrl;
 
   try {
-    user = await prisma.user.update({
+    await prisma.user.update({
       where: {
-        email,
+        id: sub,
       },
       data: {
         avatarUrl: request.file?.filename,
@@ -335,14 +284,14 @@ async function changeAvatar(
         path.resolve(__dirname, "..", "..", "database", "images", oldAvatar),
       );
   } catch (error) {
-    return response.status(200).json({
+    return response.status(400).json({
       message: "Error while tried to change avatar!",
     });
   }
 
-  return response.status(202).json({
+  return response.status(200).json({
     message: "Avatar changed.",
-    avatarUrl: `${AVATARS_BASE_URL}/${user.avatarUrl}`,
+    avatarUrl: `${AVATARS_BASE_URL}/${request.file?.filename}`,
   });
 }
 
@@ -350,7 +299,8 @@ async function changeType(
   request: express.Request,
   response: express.Response,
 ) {
-  const { patientEmail, adminEmail, newType } = request.body;
+  const { sub } = request;
+  const { patientEmail, newType } = request.body;
 
   if (newType !== "patient" && newType !== "medic") {
     return response.status(400).json({
@@ -360,14 +310,12 @@ async function changeType(
 
   const admin = await prisma.user.findUnique({
     where: {
-      email: adminEmail,
+      id: sub,
     },
   });
 
   if (!admin || admin?.type !== "admin") {
-    return response.status(401).json({
-      message: "Unauthorized",
-    });
+    return response.status(401).send();
   }
 
   const patient = await prisma.user.findUnique({
@@ -402,27 +350,25 @@ async function changeType(
   });
 }
 
-function fixUrl(avatarUrl: string | null, type: "report" | "avatar") {
-  if (
-    avatarUrl &&
-    !avatarUrl.includes("http://") &&
-    !avatarUrl.includes("https://")
-  ) {
+function fixUrl(
+  url: string | null | undefined,
+  type: "report" | "avatar",
+): string | null {
+  if (url && !url.includes("http://") && !url.includes("https://")) {
     switch (type) {
       case "report":
-        return `${REPORTS_BASE_URL}/${avatarUrl}`;
+        return `${REPORTS_BASE_URL}/${url}`;
       case "avatar":
-        return `${AVATARS_BASE_URL}/${avatarUrl}`;
+        return `${AVATARS_BASE_URL}/${url}`;
     }
   }
 
-  return avatarUrl;
+  return url || null;
 }
 
 export {
   getUsers,
   getUserById,
-  getUserByEmail,
   getUserByToken,
   login,
   register,

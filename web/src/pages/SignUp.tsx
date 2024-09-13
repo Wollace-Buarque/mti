@@ -78,90 +78,84 @@ export default function SignUp() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header signup />
+    <>
+      <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-between gap-8 py-6 sm:flex-row sm:gap-0 sm:py-0">
-        <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
+      <div className="w-11/12 rounded-lg bg-black/40 p-6 sm:w-2/5">
+        <h1 className="mb-6 text-4xl text-title">Cadastro</h1>
 
-        <div className="w-11/12 rounded-lg bg-black/40 p-6 sm:w-2/5">
-          <h1 className="mb-6 text-4xl text-title">Cadastro</h1>
+        <form onSubmit={handleSubmit}>
+          <FormGroup
+            name="name"
+            title="Nome"
+            placeholder="Digite seu nome completo"
+          />
 
-          <form onSubmit={handleSubmit}>
+          <FormGroup
+            className="mt-3"
+            name="email"
+            title="E-mail"
+            placeholder="Digite seu e-mail"
+          />
+
+          <div className="relative mt-3">
             <FormGroup
-              name="name"
-              title="Nome"
-              placeholder="Digite seu nome completo"
+              name="password"
+              title="Senha"
+              placeholder="Digite sua senha"
+              type={showPassword ? "text" : "password"}
             />
 
-            <FormGroup
-              className="mt-3"
-              name="email"
-              title="E-mail"
-              placeholder="Digite seu e-mail"
-            />
-
-            <div className="relative mt-3">
-              <FormGroup
-                name="password"
-                title="Senha"
-                placeholder="Digite sua senha"
-                type={showPassword ? "text" : "password"}
-              />
-
-              <button
-                title="Mostrar senha"
-                onClick={() => setShowPassword(!showPassword)}
-                type="button"
-                className="absolute bottom-2 right-2"
-              >
-                {showPassword ? (
-                  <Eye size={20} color="#EBA417" />
-                ) : (
-                  <EyeClosed size={20} color="#EBA417" />
-                )}
-              </button>
-            </div>
-
-            <div className="relative mt-3">
-              <FormGroup
-                name="check-password"
-                title="Confirmar senha"
-                placeholder="Digite sua senha novamente"
-                type={showPassword ? "text" : "password"}
-              />
-
-              <button
-                title="Mostrar senha"
-                onClick={() => setShowPassword(!showPassword)}
-                type="button"
-                className="absolute bottom-2 right-2"
-              >
-                {showPassword ? (
-                  <Eye size={20} color="#EBA417" />
-                ) : (
-                  <EyeClosed size={20} color="#EBA417" />
-                )}
-              </button>
-            </div>
-
-            <Button className="mt-4" isLoading={isSubmitting}>
-              Cadastrar
-            </Button>
-          </form>
-
-          <div className="mt-4 flex flex-col text-sm text-description">
-            <p>
-              Já possui uma conta?{" "}
-              <Link to="/login" className="underline">
-                Entre agora
-              </Link>
-            </p>
+            <button
+              title="Mostrar senha"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+              className="absolute bottom-2 right-2"
+            >
+              {showPassword ? (
+                <Eye size={20} color="#EBA417" />
+              ) : (
+                <EyeClosed size={20} color="#EBA417" />
+              )}
+            </button>
           </div>
-        </div>
-      </main>
 
-      <Footer />
-    </div>
+          <div className="relative mt-3">
+            <FormGroup
+              name="check-password"
+              title="Confirmar senha"
+              placeholder="Digite sua senha novamente"
+              type={showPassword ? "text" : "password"}
+            />
+
+            <button
+              title="Mostrar senha"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+              className="absolute bottom-2 right-2"
+            >
+              {showPassword ? (
+                <Eye size={20} color="#EBA417" />
+              ) : (
+                <EyeClosed size={20} color="#EBA417" />
+              )}
+            </button>
+          </div>
+
+          <Button className="mt-4" isLoading={isSubmitting}>
+            Cadastrar
+          </Button>
+        </form>
+
+        <div className="mt-4 flex flex-col text-sm text-description">
+          <p>
+            Já possui uma conta?{" "}
+            <Link to="/login" className="underline">
+              Entre agora
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
   );
 }

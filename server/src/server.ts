@@ -10,13 +10,13 @@ import { changeReport } from "./services/reports";
 import {
   changeAvatar,
   changeType,
-  getUserByEmail,
   getUserById,
   getUserByToken,
   getUsers,
   login,
   register,
 } from "./services/user";
+import { authentication } from "./middleware/authentication";
 
 const app = express();
 export const prisma = new PrismaClient();
@@ -25,21 +25,16 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => authentication(req, res, next));
+
 app.use("/avatars", express.static(multerConfig.destination));
 app.use("/reports", express.static(multerConfig.reports));
 
 app.get("/users", (request: express.Request, response: express.Response) =>
   getUsers(request, response),
 );
-app.get(
-  "/users/:email",
-  (request: express.Request, response: express.Response) =>
-    getUserByEmail(request, response),
-);
-app.get(
-  "/token/:token",
-  (request: express.Request, response: express.Response) =>
-    getUserByToken(request, response),
+app.get("/token", (request: express.Request, response: express.Response) =>
+  getUserByToken(request, response),
 );
 app.get("/id/:id", (request: express.Request, response: express.Response) =>
   getUserById(request, response),

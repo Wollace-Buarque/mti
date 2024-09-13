@@ -50,7 +50,6 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
 
     try {
       const { data } = await api.post("/type", {
-        adminEmail: user.email,
         patientEmail: patient.email,
         newType,
       });

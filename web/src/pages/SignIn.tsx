@@ -4,13 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 
 import logoMTI from "../assets/logo.png";
 import { Button } from "../components/Button";
-import Footer from "../components/Footer";
 import FormGroup from "../components/FormGroup";
-import Header from "../components/Header/Header";
 import { AuthenticateContext } from "../context/AuthenticateContext";
+import { api } from "../services/api";
 import { login } from "../services/authentication";
 import { showToast } from "../utilities/toast";
-import { api } from "../services/api";
 
 export default function SignIn() {
   const { setUser } = useContext(AuthenticateContext);
@@ -69,73 +67,67 @@ export default function SignIn() {
     localStorage.setItem("token", response.token);
     api.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
 
-    navigate("/account");
+    navigate("/");
     showToast({ message: "Login realizado com sucesso!" });
 
     setIsSubmitting(false);
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header signin />
+    <>
+      <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center sm:justify-between gap-20 my-10 sm:flex-row sm:gap-0 sm:py-0">
-        <img src={logoMTI} alt="MTI - O melhor para você" draggable={false} />
+      <div className="w-11/12 rounded-lg bg-black/40 p-6 sm:w-2/5">
+        <h1 className="mb-6 text-4xl text-title">Entrar</h1>
 
-        <div className="w-11/12 rounded-lg bg-black/40 p-6 sm:w-2/5">
-          <h1 className="mb-6 text-4xl text-title">Entrar</h1>
+        <form onSubmit={handleSubmit}>
+          <FormGroup
+            name="email"
+            title="E-mail"
+            placeholder="Digite seu e-mail"
+            type="email"
+          />
 
-          <form onSubmit={handleSubmit}>
+          <div className="relative mt-3">
             <FormGroup
-              name="email"
-              title="E-mail"
-              placeholder="Digite seu e-mail"
-              type="email"
+              name="password"
+              title="Senha"
+              placeholder="Digite sua senha"
+              type={showPassword ? "text" : "password"}
             />
 
-            <div className="relative mt-3">
-              <FormGroup
-                name="password"
-                title="Senha"
-                placeholder="Digite sua senha"
-                type={showPassword ? "text" : "password"}
-              />
+            <button
+              title="Mostrar senha"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+              className="absolute bottom-2 right-2"
+            >
+              {showPassword ? (
+                <Eye size={20} color="#EBA417" />
+              ) : (
+                <EyeClosed size={20} color="#EBA417" />
+              )}
+            </button>
+          </div>
 
-              <button
-                title="Mostrar senha"
-                onClick={() => setShowPassword(!showPassword)}
-                type="button"
-                className="absolute bottom-2 right-2"
-              >
-                {showPassword ? (
-                  <Eye size={20} color="#EBA417" />
-                ) : (
-                  <EyeClosed size={20} color="#EBA417" />
-                )}
-              </button>
-            </div>
+          <Button className="mt-4" isLoading={isSubmitting}>
+            Entrar
+          </Button>
+        </form>
 
-            <Button className="mt-4" isLoading={isSubmitting}>
-              Entrar
-            </Button>
-          </form>
+        <div className="mt-4 flex flex-col text-sm text-description">
+          <a className="underline" href="#">
+            Esqueceu sua senha?
+          </a>
 
-          <div className="mt-4 flex flex-col text-sm text-description">
-            <a className="underline" href="#">
-              Esqueceu sua senha?
-            </a>
-
-            <div>
-              Não possui uma conta?{" "}
-              <Link to="/register" className="underline">
-                Cadastre-se gratuitamente
-              </Link>
-            </div>
+          <div>
+            Não possui uma conta?{" "}
+            <Link to="/register" className="underline">
+              Cadastre-se gratuitamente
+            </Link>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </>
   );
 }

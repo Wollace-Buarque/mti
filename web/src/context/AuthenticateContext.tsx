@@ -50,24 +50,30 @@ export const AuthenticateProvider = ({ children }: any) => {
       return;
     }
 
-    api.get(`/token/${token}`).then((response) => {
-      if (response.status !== 201) {
-        localStorage.removeItem("token");
-        return;
-      }
+    api
+      .get(`/token`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status !== 201) {
+          localStorage.removeItem("token");
+          return;
+        }
 
-      setUser({
-        id: response.data.id,
-        name: response.data.name,
-        email: response.data.email,
-        token: response.data.token,
-        type: response.data.type,
-        report: response.data.report,
-        avatarUrl: response.data.avatarUrl,
-        createdAt: new Date(response.data.createdAt),
-        activities: response.data.activities,
+        setUser({
+          id: response.data.id,
+          name: response.data.name,
+          email: response.data.email,
+          token: response.data.token,
+          type: response.data.type,
+          report: response.data.report,
+          avatarUrl: response.data.avatarUrl,
+          createdAt: new Date(response.data.createdAt),
+          activities: response.data.activities,
+        });
       });
-    });
 
     setLoading(false);
   }, []);
