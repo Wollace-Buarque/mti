@@ -70,7 +70,6 @@ export function Report({ user }: ReportProps) {
       },
       error: "Algo deu errado o seu relatório.",
       finally: () => {
-        acceptedFiles.pop();
         setIsUploading(false);
         setFile(null);
       },
