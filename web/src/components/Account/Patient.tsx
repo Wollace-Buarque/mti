@@ -40,7 +40,7 @@ export function Patient({ patient, showPatients }: PatientProps) {
 
   return (
     <div
-      className={`flex cursor-pointer items-center p-2 ${showPatients ? "visible opacity-100" : "invisible opacity-0"} rounded transition-colors duration-500 active:bg-[#303030]`}
+      className={`flex cursor-pointer items-center p-2 ${showPatients ? "visible opacity-100" : "invisible opacity-0"} rounded-sm transition-colors duration-500 active:bg-[#303030]`}
     >
       <Link
         title={`Ver atividades de ${patient.name}`}

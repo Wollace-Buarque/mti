@@ -16,7 +16,6 @@ import {
 } from "../context/AuthenticateContext";
 import { Patient as IPatient } from "../context/PatientContext";
 import { api } from "../services/api";
-import Loading from "./Loading";
 
 export default function Account() {
   const { loading, user } = useContext(AuthenticateContext);
@@ -40,7 +39,7 @@ export default function Account() {
     if (!user || (!isAdmin && !isMedic)) return;
 
     api.get("/users").then((response) => setPatients(response.data));
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     setFilteredPatients(patients);

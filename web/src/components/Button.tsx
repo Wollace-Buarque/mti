@@ -18,7 +18,7 @@ export function Button({
   return (
     <button
       className={twMerge(
-        "flex w-full items-center justify-center rounded-lg bg-button-base py-3 text-center font-semibold text-button-text transition-[filter] duration-300 enabled:hover:brightness-90",
+        "flex w-full items-center justify-center rounded-lg bg-button-base py-3 text-center font-semibold text-button-text transition-[filter] duration-300 enabled:cursor-pointer enabled:hover:brightness-90",
         className,
       )}
       disabled={isLoading}

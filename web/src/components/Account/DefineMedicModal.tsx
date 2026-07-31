@@ -127,8 +127,8 @@ export default function DefineMedicModal(props: DefineMedicModalProps) {
             <div className="flex gap-2">
               <Button title="Definir" />
 
-              <Dialog.Close className="mt-4 w-full rounded bg-button-base py-3 text-center font-semibold text-button-text transition-[filter] duration-300 hover:brightness-90">
-                Cancelar
+              <Dialog.Close asChild>
+                <Button title="Cancelar" />
               </Dialog.Close>
             </div>
           </form>

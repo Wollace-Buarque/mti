@@ -98,7 +98,6 @@ export function Profile() {
         success: "Sua linda foto de perfil foi atualizada.",
         error: "Algo deu errado ao enviar sua foto de perfil.",
         finally: () => {
-          acceptedFiles.pop();
           setIsUploading(false);
           setFile(null);
         },
@@ -113,7 +112,6 @@ export function Profile() {
   function handleCancel() {
     setFile(null);
     setCroppedImage(undefined);
-    acceptedFiles.pop();
   }
 
   return (
@@ -170,15 +168,12 @@ export function Profile() {
 
         <button
           onClick={handleExit}
-          className="absolute right-2 top-2 h-fit font-semibold uppercase sm:right-8 sm:top-8 hover:scale-125 transition-transform"
+          className="absolute right-2 top-2 h-fit font-semibold uppercase transition-transform hover:scale-125 sm:right-0 sm:top-8"
           type="button"
         >
           <span className="sr-only">Sair da conta</span>
 
-          <SignOut
-            size={20}
-            color="#EBA417"
-          />
+          <SignOut size={20} color="#EBA417" />
         </button>
       </div>
     </>

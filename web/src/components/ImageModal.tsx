@@ -16,7 +16,7 @@ export function ImageModal({ className, ...rest }: ImageModalProps) {
           <Dialog.Content className="fixed left-1/2 top-1/2 w-[95vw] -translate-x-1/2 -translate-y-1/2 sm:w-[80vw]">
             <img
               {...rest}
-              className="size-full rounded object-cover shadow-image"
+              className="size-full rounded-sm object-cover shadow-image"
               draggable={false}
             />
 

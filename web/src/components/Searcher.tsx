@@ -18,7 +18,7 @@ export default function Searcher(props: SearcherProps) {
     <div className={`flex items-center ${className}`} {...rest}>
       <div className="group flex w-full items-center">
         <input
-          className="w-full rounded-l-full border border-line bg-transparent p-2 pl-5 outline-none focus:border-button-base group-hover:border-button-base"
+          className="w-full rounded-l-full border border-line bg-transparent p-2 pl-5 outline-hidden focus:border-button-base group-hover:border-button-base"
           value={value}
           placeholder="Pesquisar"
           onChange={(event) => setValue(event.target.value)}

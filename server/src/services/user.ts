@@ -1,35 +1,32 @@
-import express, { response } from "express";
-import fs from "fs";
-import path from "path";
+import express, { Response, response } from "express"
+import fs from "fs"
+import path from "path"
 
-import { prisma } from "../server";
-import { accountExists, comparePassword, createAccount } from "./account";
+import { prisma } from "../server"
+import { accountExists, comparePassword, createAccount } from "./account"
+import { AVATARS_URL } from "../config/multer"
 
-const AVATARS_BASE_URL = "http://localhost:3000/avatars";
-const REPORTS_BASE_URL = "http://localhost:3000/reports";
+const AVATARS_BASE_URL = "http://localhost:3000/avatars"
+const REPORTS_BASE_URL = "http://localhost:3000/reports"
 
-async function getUsers(request: express.Request, response: express.Response) {
-  const { sub } = request;
+async function getUsers(request: express.Request, response: express.Response): Promise<any> {
+  const { sub } = request
 
   const user = await prisma.user.findUnique({
     where: {
       id: sub,
     },
-  });
+  })
 
   if (!user) {
     return response.status(400).json({
       message: "Invalid credentials.",
-    });
+    })
   }
 
-  const isMedic = user.type === "medic";
-  const isAdmin = user.type === "admin";
-  const filterOption = isMedic
-    ? ["patient"]
-    : isAdmin
-      ? ["patient", "medic"]
-      : [];
+  const isMedic = user.type === "medic"
+  const isAdmin = user.type === "admin"
+  const filterOption = isMedic ? ["patient"] : isAdmin ? ["patient", "medic"] : []
 
   const users = await prisma.user.findMany({
     select: {
@@ -52,25 +49,21 @@ async function getUsers(request: express.Request, response: express.Response) {
         _count: "desc",
       },
     },
-  });
+  })
 
   users.reduce((current, user) => {
-    user.avatarUrl = fixUrl(user.avatarUrl, "avatar");
+    user.avatarUrl = fixUrl(user.avatarUrl, "avatar")
 
-    if (user.report)
-      user.report.reportUrl = fixUrl(user.report.reportUrl, "report");
+    if (user.report) user.report.reportUrl = fixUrl(user.report.reportUrl, "report")
 
-    return current;
-  }, []);
+    return current
+  }, [])
 
-  return response.json(users);
+  return response.json(users)
 }
 
-async function getUserById(
-  request: express.Request,
-  response: express.Response,
-) {
-  const { id } = request.params;
+async function getUserById(request: express.Request, response: express.Response): Promise<any> {
+  const { id } = request.params
 
   const user = await prisma.user.findUnique({
     where: {
@@ -90,27 +83,23 @@ async function getUserById(
         },
       },
     },
-  });
+  })
 
   if (user) {
     user.activities.reduce((_: any, activity) => {
-      activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar");
-    }, []);
+      activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar")
+    }, [])
 
-    user.avatarUrl = fixUrl(user.avatarUrl, "avatar");
+    user.avatarUrl = fixUrl(user.avatarUrl, "avatar")
 
-    if (user.report)
-      user.report.reportUrl = fixUrl(user.report.reportUrl, "report");
+    if (user.report) user.report.reportUrl = fixUrl(user.report.reportUrl, "report")
   }
 
-  return response.json({ found: !!user, ...user });
+  return response.json({ found: !!user, ...user })
 }
 
-async function getUserByToken(
-  request: express.Request,
-  response: express.Response,
-) {
-  const { sub } = request;
+async function getUserByToken(request: express.Request, response: express.Response): Promise<any> {
+  const { sub } = request
 
   const user = await prisma.user.findUnique({
     where: {
@@ -131,26 +120,25 @@ async function getUserByToken(
         },
       },
     },
-  });
+  })
 
   if (!user) {
-    return response.status(404).send();
+    return response.status(404).send()
   }
 
   user.activities?.reduce((_: any, activity) => {
-    activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar");
-  }, []);
+    activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar")
+  }, [])
 
-  user.avatarUrl = fixUrl(user.avatarUrl, "avatar");
+  user.avatarUrl = fixUrl(user.avatarUrl, "avatar")
 
-  if (user.report)
-    user.report.reportUrl = fixUrl(user.report.reportUrl, "report");
+  if (user.report) user.report.reportUrl = fixUrl(user.report.reportUrl, "report")
 
-  return response.status(201).json({ found: !!user, ...user });
+  return response.status(201).json({ found: !!user, ...user })
 }
 
-async function login(request: express.Request, response: express.Response) {
-  const { email, password } = request.body;
+async function login(request: express.Request, response: express.Response): Promise<any> {
+  const { email, password } = request.body
 
   const user = await prisma.user.findFirst({
     where: {
@@ -177,33 +165,30 @@ async function login(request: express.Request, response: express.Response) {
         },
       },
     },
-  });
+  })
 
   if (!user) {
     return response.status(200).json({
       message: "Account not exists / Invalid password.",
-    });
+    })
   }
 
   user.activities.reduce((_: any, activity) => {
-    activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar");
-  }, []);
+    activity.author.avatarUrl = fixUrl(activity.author.avatarUrl, "avatar")
+  }, [])
 
-  if (user.report)
-    user.report.reportUrl = fixUrl(user.report.reportUrl, "report");
+  if (user.report) user.report.reportUrl = fixUrl(user.report.reportUrl, "report")
 
-  const passwordIsValid = comparePassword(password, user.password);
+  const passwordIsValid = comparePassword(password, user.password)
 
   if (!passwordIsValid) {
     return response.status(404).json({
       message: "Account not exists / Invalid password.",
-    });
+    })
   }
 
   const token =
-    Math.random().toString(16).slice(2) +
-    Math.random().toString(16).slice(2) +
-    Math.random().toString(16).slice(2);
+    Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2)
 
   await prisma.user.update({
     where: {
@@ -212,9 +197,9 @@ async function login(request: express.Request, response: express.Response) {
     data: {
       token,
     },
-  });
+  })
 
-  user.avatarUrl = fixUrl(user.avatarUrl, "avatar");
+  user.avatarUrl = fixUrl(user.avatarUrl, "avatar")
 
   return response.status(202).json({
     message: "Logged in.",
@@ -226,31 +211,28 @@ async function login(request: express.Request, response: express.Response) {
     avatarUrl: user.avatarUrl,
     createdAt: user.createdAt,
     activities: user.activities,
-  });
+  })
 }
 
-async function register(request: express.Request, response: express.Response) {
-  const { name, email, password } = request.body;
-  const exists = await accountExists(email);
+async function register(request: express.Request, response: express.Response): Promise<any> {
+  const { name, email, password } = request.body
+  const exists = await accountExists(email)
 
   if (exists) {
     return response.status(400).json({
       message: "Account already exists.",
-    });
+    })
   }
 
-  await createAccount(name, email, password);
+  await createAccount(name, email, password)
 
   return response.status(201).json({
     message: "Account created.",
-  });
+  })
 }
 
-async function changeAvatar(
-  request: express.Request,
-  response: express.Response,
-) {
-  const { sub } = request;
+async function changeAvatar(request: express.Request, response: express.Response): Promise<any> {
+  const { sub } = request
 
   const user = await prisma.user.findUnique({
     where: {
@@ -259,15 +241,15 @@ async function changeAvatar(
     select: {
       avatarUrl: true,
     },
-  });
+  })
 
   if (!user) {
     return response.status(404).json({
       message: "Account not exists.",
-    });
+    })
   }
 
-  const oldAvatar = user.avatarUrl;
+  const oldAvatar = user.avatarUrl
 
   try {
     await prisma.user.update({
@@ -277,63 +259,57 @@ async function changeAvatar(
       data: {
         avatarUrl: request.file?.filename,
       },
-    });
+    })
 
-    if (oldAvatar)
-      fs.unlinkSync(
-        path.resolve(__dirname, "..", "..", "database", "images", oldAvatar),
-      );
+    if (oldAvatar) fs.unlinkSync(path.resolve(AVATARS_URL, oldAvatar))
   } catch (error) {
     return response.status(400).json({
       message: "Error while tried to change avatar!",
-    });
+    })
   }
 
   return response.status(200).json({
     message: "Avatar changed.",
     avatarUrl: `${AVATARS_BASE_URL}/${request.file?.filename}`,
-  });
+  })
 }
 
-async function changeType(
-  request: express.Request,
-  response: express.Response,
-) {
-  const { sub } = request;
-  const { patientEmail, newType } = request.body;
+async function changeType(request: express.Request, response: express.Response): Promise<any> {
+  const { sub } = request
+  const { patientEmail, newType } = request.body
 
   if (newType !== "patient" && newType !== "medic") {
     return response.status(400).json({
       message: "Invalid type.",
-    });
+    })
   }
 
   const admin = await prisma.user.findUnique({
     where: {
       id: sub,
     },
-  });
+  })
 
   if (!admin || admin?.type !== "admin") {
-    return response.status(401).send();
+    return response.status(401).send()
   }
 
   const patient = await prisma.user.findUnique({
     where: {
       email: patientEmail,
     },
-  });
+  })
 
   if (!patient) {
     return response.status(404).json({
       message: "Patient not exists.",
-    });
+    })
   }
 
   if (patient.type === newType) {
     return response.status(200).json({
       message: "Type changed.",
-    });
+    })
   }
 
   await prisma.user.update({
@@ -343,35 +319,24 @@ async function changeType(
     data: {
       type: newType,
     },
-  });
+  })
 
   response.status(200).json({
     message: "Type changed.",
-  });
+  })
 }
 
-function fixUrl(
-  url: string | null | undefined,
-  type: "report" | "avatar",
-): string | null {
+function fixUrl(url: string | null | undefined, type: "report" | "avatar"): string | null {
   if (url && !url.includes("http://") && !url.includes("https://")) {
     switch (type) {
       case "report":
-        return `${REPORTS_BASE_URL}/${url}`;
+        return `${REPORTS_BASE_URL}/${url}`
       case "avatar":
-        return `${AVATARS_BASE_URL}/${url}`;
+        return `${AVATARS_BASE_URL}/${url}`
     }
   }
 
-  return url || null;
+  return url || null
 }
 
-export {
-  getUsers,
-  getUserById,
-  getUserByToken,
-  login,
-  register,
-  changeAvatar,
-  changeType,
-};
+export { getUsers, getUserById, getUserByToken, login, register, changeAvatar, changeType }

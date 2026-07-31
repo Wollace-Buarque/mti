@@ -18,7 +18,7 @@ export default function FormGroup(props: FormGroupProps) {
 
       {textarea ? (
         <textarea
-          className="resize-none rounded-sm bg-[#252222] p-2 font-normal text-text placeholder-text placeholder:text-sm focus:outline focus:outline-1 focus:outline-button-base"
+          className="resize-none rounded-xs bg-[#252222] p-2 font-normal text-text placeholder-text placeholder:text-sm focus:outline focus:outline-1 focus:outline-button-base"
           rows={6}
           id={name}
           name={name}
@@ -27,7 +27,7 @@ export default function FormGroup(props: FormGroupProps) {
         />
       ) : (
         <input
-          className="rounded-sm bg-[#252222] p-2 font-normal text-text placeholder-text placeholder:text-sm focus:outline focus:outline-1 focus:outline-button-base"
+          className="rounded-xs bg-[#252222] p-2 font-normal text-text placeholder-text placeholder:text-sm focus:outline focus:outline-1 focus:outline-button-base"
           id={name}
           name={name}
           type={type ?? "text"}

@@ -19,7 +19,7 @@ export function ReportSummary({ updatedAt, reportUrl }: ReportSummaryProps) {
 
       <ImageModal
         src={reportUrl}
-        className="mt-4 size-full rounded object-cover shadow-elevation"
+        className="mt-4 size-full rounded-sm object-cover shadow-elevation"
         draggable={false}
       />
     </>

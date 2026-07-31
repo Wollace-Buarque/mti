@@ -105,7 +105,7 @@ export function Report({ user }: ReportProps) {
 
       <ImageModal
         src={file ? URL.createObjectURL(file) : user.report?.reportUrl}
-        className="mt-4 rounded shadow-elevation"
+        className="mt-4 rounded-sm shadow-elevation"
         draggable={false}
       />
     </div>

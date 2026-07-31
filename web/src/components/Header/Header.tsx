@@ -19,7 +19,7 @@ export default function Header() {
       <div className="mx-auto flex h-full max-w-5xl flex-col items-center justify-center sm:flex-row sm:justify-between">
         <Link
           to="/"
-          className="mt-7 bg-gradient-to-br from-white to-gray-500 bg-clip-text font-fire text-4xl font-black text-transparent transition-transform duration-300 selection:text-description hover:scale-[1.06] sm:mt-0"
+          className="mt-7 bg-linear-to-br from-white to-gray-500 bg-clip-text font-fire text-4xl font-black text-transparent transition-transform duration-300 selection:text-description hover:scale-[1.06] sm:mt-0"
         >
           MTI
         </Link>

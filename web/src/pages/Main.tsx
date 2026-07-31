@@ -53,7 +53,7 @@ export default function Main() {
 
           <Link
             className="mt-6 w-2/5 rounded-full bg-button-base py-3 text-center font-bold text-button-text transition-[filter] duration-300 hover:brightness-90"
-            to={user ? "/account" : "/register"}
+            to={user ? "/profile" : "/register"}
           >
             {user ? "Sua conta" : "Cadastre-se"}
           </Link>

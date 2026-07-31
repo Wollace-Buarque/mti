@@ -4,5 +4,5 @@
 }
 
 .reactEasyCrop_CropArea {
-  @apply !border-2 !border-button-base !text-black/40;
+  @apply border-2! border-button-base! text-black/40!;
 }
